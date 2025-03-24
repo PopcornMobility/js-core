@@ -1,37 +1,38 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { Menu, Dropdown, Avatar } from 'antd'
-import { FormattedMessage } from 'react-intl'
+import React from "react";
+import { connect } from "react-redux";
+import { Menu, Dropdown, Avatar } from "antd";
+import { UserOutlined } from "@ant-design/icons";
+import { FormattedMessage } from "react-intl";
 // import { APP_LAST_UPDATE } from 'utils/constants'
-import styles from './style.module.scss'
+import styles from "./style.module.scss";
 
 @connect(({ user }) => ({ user }))
 class ProfileMenu extends React.Component {
   logout = () => {
-    const { dispatch } = this.props
+    const { dispatch } = this.props;
     dispatch({
-      type: 'user/LOGOUT',
-    })
-  }
+      type: "user/LOGOUT"
+    });
+  };
 
   reload = () => {
-    window.location.reload(true)
-  }
+    window.location.reload(true);
+  };
 
   render() {
-    const { user } = this.props
+    const { user } = this.props;
     const menu = (
       <Menu selectable={false}>
         <Menu.Item>
           <div>
-            <FormattedMessage id="topBar.profileMenu.hello" />,{' '}
-            <strong>{user.name || 'Anonymous'}</strong>
+            <FormattedMessage id="topBar.profileMenu.hello" />,{" "}
+            <strong>{user.name || "Anonymous"}</strong>
           </div>
           <div>
             <strong>
-              <FormattedMessage id="topBar.profileMenu.role" />:{' '}
+              <FormattedMessage id="topBar.profileMenu.role" />:{" "}
             </strong>
-            {user.roles.join(', ')}
+            {user.roles.join(", ")}
           </div>
         </Menu.Item>
         <Menu.Divider />
@@ -57,21 +58,21 @@ class ProfileMenu extends React.Component {
           </a>
         </Menu.Item>
       </Menu>
-    )
+    );
     return (
-      <Dropdown overlay={menu} trigger={['click']}>
+      <Dropdown overlay={menu} trigger={["click"]}>
         <div className={styles.dropdown}>
           <Avatar
             className={styles.avatar}
             shape="square"
             size="large"
             src={user.profile_picture}
-            icon="user"
+            icon={<UserOutlined style={{ color: "grey" }} />}
           />
         </div>
       </Dropdown>
-    )
+    );
   }
 }
 
-export default ProfileMenu
+export default ProfileMenu;
