@@ -1,34 +1,42 @@
-import React from 'react'
-import { Button, Popover } from 'antd'
-import QrReader from 'react-qr-reader'
+import React from "react";
+import { Button, Popover } from "antd";
+import QrReader from "react-qr-reader";
 
 export default class QRScanner extends React.Component {
   state = {
-    scanEnabled: false,
-  }
+    scanEnabled: false
+  };
 
   handleScan = data => {
-    const { onScan, keepOpen } = this.props
+    const { onScan, keepOpen } = this.props;
 
     if (data) {
       if (keepOpen !== true) {
-        this.setState({ scanEnabled: false })
+        this.setState({ scanEnabled: false });
       }
 
-      // check if data contains a citylink specific url
-      const regex = /(.*)citylink.ro\/ref\/(.*)/
-      const match = data.match(regex)
-      const ref = match && match[2]
+      // check if data contains a popride specific url
+      const regex = /(.*)popride.ro\/ref\/(.*)/;
+      const match = data.match(regex);
+      const ref = match && match[2];
 
       if (onScan) {
-        onScan(ref || data)
+        onScan(ref || data);
       }
     }
-  }
+  };
 
   render() {
-    const { scanEnabled } = this.state
-    const { className, buttonText, buttonSize, buttonBlock, buttonType, style, extra } = this.props
+    const { scanEnabled } = this.state;
+    const {
+      className,
+      buttonText,
+      buttonSize,
+      buttonBlock,
+      buttonType,
+      style,
+      extra
+    } = this.props;
 
     const scanView = scanEnabled && (
       <QrReader
@@ -38,7 +46,7 @@ export default class QRScanner extends React.Component {
         style={{ width: 250, height: 250 }}
         showViewFinder
       />
-    )
+    );
 
     const scanButton = (
       <Popover
@@ -61,11 +69,11 @@ export default class QRScanner extends React.Component {
           type={buttonType}
           style={style}
         >
-          {buttonText || 'Scan'}
+          {buttonText || "Scan"}
         </Button>
       </Popover>
-    )
+    );
 
-    return scanButton
+    return scanButton;
   }
 }

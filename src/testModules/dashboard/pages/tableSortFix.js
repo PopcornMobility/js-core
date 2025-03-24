@@ -7,7 +7,7 @@ import { load } from "../list/actions";
 
 const { api, get } = net;
 
-const API_USERS = `https://stage.api.citylink.ro/api/v1/admin/users`;
+const API_USERS = `https://stage.api.popride.ro/api/v1/admin/users`;
 
 const getUsers = params => get(API_USERS, params, getToken());
 
