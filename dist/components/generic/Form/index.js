@@ -3,8 +3,8 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 import React from "react";
 import { Form as AntForm, Input, Button, Select, DatePicker, InputNumber, Checkbox, Upload, TimePicker, AutoComplete, Row, Col } from "antd";
 import moment from "moment";
-import _ from "lodash";
-import QRScanner from "../QRScanner";
+import _ from "lodash"; // import QRScanner from "../QRScanner";
+
 import countries from "./countries.json";
 import "./style.css";
 import RemoteSelect from "./remoteSelect";
@@ -83,29 +83,6 @@ class Form extends React.Component {
           onChange(field, getFieldsValue(), setFieldsValue);
         }, 1);
       }
-    };
-
-    this.getQRScanner = field => {
-      const {
-        form: {
-          setFieldsValue
-        }
-      } = this.props;
-
-      const handleScan = data => {
-        if (data) {
-          setFieldsValue({
-            [field]: data
-          }); // manually trigger on change after scan
-
-          this.handleOnChange(field);
-        }
-      };
-
-      return /*#__PURE__*/React.createElement(QRScanner, {
-        className: "ant-input-search-button",
-        onScan: handleScan
-      });
     };
 
     this.getSelectItem = itemConfig => {
@@ -217,15 +194,6 @@ class Form extends React.Component {
             onChange: () => this.handleOnChange(field)
           }, rest));
 
-        case "qrcode":
-          return /*#__PURE__*/React.createElement(Input, _extends({
-            placeholder: placeholder,
-            disabled: disabled,
-            addonAfter: this.getQRScanner(field),
-            className: "ant-input-search-enter-button",
-            onChange: () => this.handleOnChange(field)
-          }, rest));
-
         case "textarea":
           return /*#__PURE__*/React.createElement(Input.TextArea, _extends({
             placeholder: placeholder,
@@ -303,7 +271,7 @@ class Form extends React.Component {
         field,
         label,
         type,
-        rules,
+        // rules,
         items,
         render,
         layout: itemLayout
@@ -324,9 +292,9 @@ class Form extends React.Component {
           className: isSubItem ? "mb-0" : null
         }, props), render && render(form)));
       } // adjust value prop name, depending on input type
+      // const extraProps = this.getExtraProps(type);
+      // set field errors, if any
 
-
-      const extraProps = this.getExtraProps(type); // set field errors, if any
 
       if (errors && errors[field]) {
         props = { ...props,
@@ -355,20 +323,16 @@ class Form extends React.Component {
 
           initialValue = moment(initialValue, format);
         }
-      }
+      } // const fieldDecoratorOptions = { rules, initialValue, ...extraProps };
 
-      const fieldDecoratorOptions = {
-        rules,
-        initialValue,
-        ...extraProps
-      };
+
       return /*#__PURE__*/React.createElement(Col, _extends({
         key: field
       }, layout), /*#__PURE__*/React.createElement(AntForm.Item, _extends({
         label: label
       }, props, {
         className: isSubItem ? "mb-0" : null
-      }), !items && form.getFieldDecorator(field, fieldDecoratorOptions)(this.getItem(itemConfig)), items && items.map(subItemConfig => this.getFormItem(subItemConfig, true))));
+      }), !items ? this.getItem(itemConfig) : items.map(subItemConfig => this.getFormItem(subItemConfig, true))));
     };
   }
 
