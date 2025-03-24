@@ -1,6 +1,10 @@
 import React from "react";
 import { Table, Input, Row, Col, Button, Tooltip } from "antd";
-import { FilterOutlined } from "@ant-design/icons";
+import {
+  FilterOutlined,
+  StopOutlined,
+  ReloadOutlined
+} from "@ant-design/icons";
 import _ from "lodash";
 import { connect } from "react-redux";
 import download from "downloadjs";
@@ -398,13 +402,16 @@ class DataTable extends React.Component {
                 placement="top"
                 title={intl.formatMessage({ id: "datatable.tooltips.clear" })}
               >
-                <Button icon="stop" onClick={this.handleClearFilters} />
+                <Button
+                  icon={<StopOutlined />}
+                  onClick={this.handleClearFilters}
+                />
               </Tooltip>
               <Tooltip
                 placement="top"
                 title={intl.formatMessage({ id: "datatable.tooltips.refresh" })}
               >
-                <Button icon="reload" onClick={this.handleRefresh}>
+                <Button icon={<ReloadOutlined />} onClick={this.handleRefresh}>
                   {intl.formatMessage({ id: "datatable.actions.refresh" })}
                 </Button>
               </Tooltip>
