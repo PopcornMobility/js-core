@@ -1,63 +1,64 @@
-import React from 'react'
-import { Table, Input, Row, Col, Button, Tooltip, Icon } from 'antd'
-import _ from 'lodash'
-import { connect } from 'react-redux'
-import download from 'downloadjs'
-import { injectIntl } from 'react-intl'
+import React from "react";
+import { Table, Input, Row, Col, Button, Tooltip } from "antd";
+import { FilterOutlined } from "@ant-design/icons";
+import _ from "lodash";
+import { connect } from "react-redux";
+import download from "downloadjs";
+import { injectIntl } from "react-intl";
 
-import net from 'utils/net'
-import RemoteFilter from './remoteFilter'
-import ColumnSelector from './columnSelector'
+import net from "../../../utils/net";
+import RemoteFilter from "./remoteFilter";
+import ColumnSelector from "./columnSelector";
 
 @injectIntl
 @connect(({ settings: { isMobileView } }) => ({ isMobileView }))
 class DataTable extends React.Component {
   state = {
     params: {
-      search: '',
+      search: "",
       page: 1,
-      limit: 25, // default page size
+      limit: 25 // default page size
     },
-    columnSelector: {},
-  }
+    columnSelector: {}
+  };
 
   componentDidMount() {
     // perform initial load
-    this.load()
+    this.load();
   }
 
   componentDidUpdate(prevProps) {
-    const { filters, loadActionPayload } = this.props
+    const { filters, loadActionPayload } = this.props;
 
     if (!_.isEqual(prevProps.filters, filters)) {
       // reload if prop filters have changed, while also clearing previous filters
-      this.clearFilters()
+      this.clearFilters();
     }
 
     if (!_.isEqual(prevProps.loadActionPayload, loadActionPayload)) {
-      this.handlePayloadChange()
+      this.handlePayloadChange();
     }
   }
 
   getParams = () => {
-    const { filters, loadActionPayload, columns } = this.props
-    let { params } = this.state
+    const { filters, loadActionPayload, columns } = this.props;
+    let { params } = this.state;
 
     const defaultSortableColumns = columns.filter(
-      column => column.defaultSortOrder && column.dataIndex,
-    )
+      column => column.defaultSortOrder && column.dataIndex
+    );
 
     // define default sorter, if none already specified by user
     if (defaultSortableColumns.length > 0 && !params.sorter) {
-      const col = defaultSortableColumns[0]
+      const col = defaultSortableColumns[0];
 
       params = {
         ...params,
         sorter: {
           field: col.dataIndex,
-          order: col.defaultSortOrder === 'ascend' ? 'ASC' : 'DESC',
-        },
-      }
+          order: col.defaultSortOrder === "ascend" ? "ASC" : "DESC"
+        }
+      };
     }
 
     // if filters have been set as a prop, merge with the ones from state
@@ -66,9 +67,9 @@ class DataTable extends React.Component {
         ...params,
         filters: {
           ...params.filters,
-          ...filters,
-        },
-      }
+          ...filters
+        }
+      };
     }
 
     // if extra load action params were set as a prop, merge with those as well
@@ -77,52 +78,54 @@ class DataTable extends React.Component {
       Merge above with filters from loadActionPayload filters
     */
     if (loadActionPayload) {
-      const { filters: filtersFromPayload, ...rest } = loadActionPayload
+      const { filters: filtersFromPayload, ...rest } = loadActionPayload;
 
       params = {
         ...params,
-        ...rest,
-      }
+        ...rest
+      };
 
       if (filtersFromPayload) {
         params = {
           ...params,
           filters: {
             ...params.filters,
-            ...filtersFromPayload,
-          },
-        }
+            ...filtersFromPayload
+          }
+        };
       }
     }
 
-    return params
-  }
+    return params;
+  };
 
   load = () => {
-    const { dispatch, loadAction } = this.props
-    dispatch(loadAction(this.getParams()))
-  }
+    const { dispatch, loadAction } = this.props;
+    dispatch(loadAction(this.getParams()));
+  };
 
   handleTableChange = (pagination, filters, sorter) => {
     const {
-      params: { search },
-    } = this.state
+      params: { search }
+    } = this.state;
 
     // only keep the search value from the old params object, the rest should be rebuilt
     let params = {
       search,
       page: pagination.current,
-      limit: pagination.pageSize,
-    }
+      limit: pagination.pageSize
+    };
 
     // only keep non null filters
-    const cleanFilters = Object.entries(filters).filter(entry => entry[1] !== null)
+    const cleanFilters = Object.entries(filters).filter(
+      entry => entry[1] !== null
+    );
 
     if (cleanFilters.length !== 0) {
       params = {
         ...params,
-        filters: Object.fromEntries(cleanFilters),
-      }
+        filters: Object.fromEntries(cleanFilters)
+      };
     }
 
     // only store sorter if it's non empty, otherwise the API might fail
@@ -131,115 +134,121 @@ class DataTable extends React.Component {
         ...params,
         sorter: {
           field: sorter.field,
-          order: sorter.order === 'ascend' ? 'ASC' : 'DESC',
-        },
-      }
+          order: sorter.order === "ascend" ? "ASC" : "DESC"
+        }
+      };
     }
 
     // persist the final object so we can use it when searching
-    this.setState({ params }, () => this.load())
-  }
+    this.setState({ params }, () => this.load());
+  };
 
   handleSearch = search => {
-    let { params } = this.state
+    let { params } = this.state;
 
     params = {
       ...params,
       page: 1, // reset current page when searching
-      search,
-    }
+      search
+    };
 
-    this.setState({ params }, () => this.load())
-  }
+    this.setState({ params }, () => this.load());
+  };
 
   handleSearchInputChange = e => {
-    const { params } = this.state
+    const { params } = this.state;
 
     this.setState({
       params: {
         ...params,
-        search: e.target.value,
-      },
-    })
-  }
+        search: e.target.value
+      }
+    });
+  };
 
   clearFilters = () => {
     const {
-      params: { limit },
-    } = this.state
+      params: { limit }
+    } = this.state;
 
     const params = {
       limit,
       page: 1,
-      search: '',
-    }
+      search: ""
+    };
 
-    this.setState({ params }, () => this.load())
-  }
+    this.setState({ params }, () => this.load());
+  };
 
   handleClearFilters = () => {
-    const { onClearFilters } = this.props
+    const { onClearFilters } = this.props;
 
-    this.clearFilters()
+    this.clearFilters();
 
     if (onClearFilters) {
-      onClearFilters()
+      onClearFilters();
     }
-  }
+  };
 
   handlePayloadChange = () => {
-    const { params } = this.state
+    const { params } = this.state;
 
     this.setState(
       {
         params: {
           ...params,
-          page: 1,
-        },
+          page: 1
+        }
       },
-      () => this.load(),
-    )
-  }
+      () => this.load()
+    );
+  };
 
   handleRefresh = () => {
-    this.load()
-  }
+    this.load();
+  };
 
   handleExportClick = () => {
     const {
       exportConfig: {
         apiFn,
-        filename = 'export.xlsx',
-        mimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      },
-    } = this.props
-    const { api } = net
+        filename = "export.xlsx",
+        mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      }
+    } = this.props;
+    const { api } = net;
 
-    const apiConfig = apiFn(this.getParams())
+    const apiConfig = apiFn(this.getParams());
 
     api(apiConfig)
       .then(response => response.blob())
       .then(blob => {
-        download(blob, filename, mimeType)
-      })
-  }
+        download(blob, filename, mimeType);
+      });
+  };
 
   remoteFilterConfig = config => ({
     filterDropdown: ({ setSelectedKeys, confirm }) => (
-      <div style={config.styleColumn ? { ...config.styleColumn } : { padding: 8, width: '200px' }}>
+      <div
+        style={
+          config.styleColumn
+            ? { ...config.styleColumn }
+            : { padding: 8, width: "200px" }
+        }
+      >
         <RemoteFilter
           remoteSearch={config}
           tableDropdownFn={{
             setSelectedKeys,
-            confirm,
+            confirm
           }}
         />
       </div>
     ),
     filterIcon: filtered => (
-      <Icon type="filter" theme="filled" style={{ color: filtered ? '#1890ff' : undefined }} />
-    ),
-  })
+      <FilterOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+    )
+  });
 
   processColumns = columns => {
     // the method aims to hook the columns' sorter and filters to the
@@ -247,81 +256,81 @@ class DataTable extends React.Component {
 
     const {
       params: { sorter, filters },
-      columnSelector,
-    } = this.state
+      columnSelector
+    } = this.state;
 
-    const { filters: propFilters, isMobileView } = this.props
+    const { filters: propFilters, isMobileView } = this.props;
 
     const processedColumns = columns.map(column => {
       // Set hidden attribute by default. Avoid using 'undefined' type
       if (column.hidden !== true) {
-        column.hidden = false
+        column.hidden = false;
       }
 
       // filter out columns that should be hidden on mobile
       // Will be overwritten by <ColumnSelector  /> if enabled
       if (column.mobile === false && isMobileView) {
-        column.hidden = true
+        column.hidden = true;
       }
 
-      return column
-    })
+      return column;
+    });
 
     // Need to make copies of 'processedColumns' to not loose columns
     // For <Table /> we use 'columnsForTable'
     // For <ColumnSelector  /> we use 'processedColumns'
 
-    let columnsForTable = [...processedColumns]
+    let columnsForTable = [...processedColumns];
 
     // columnSelector - Correct hidden attribute by state
     if (Object.keys(columnSelector).length > 0) {
       columnsForTable = columnsForTable.map(column => {
-        const lookup = column.dataIndex || column.key
+        const lookup = column.dataIndex || column.key;
 
         if (columnSelector[lookup] !== undefined) {
-          column.hidden = columnSelector[lookup]
+          column.hidden = columnSelector[lookup];
         }
 
-        return column
-      })
+        return column;
+      });
     }
 
     // Filter and map <Table /> columns based on hidden prop
-    columnsForTable = columnsForTable.filter(column => column.hidden === false)
+    columnsForTable = columnsForTable.filter(column => column.hidden === false);
 
     columnsForTable = columnsForTable.map(column => {
       if (!sorter) {
-        column.sortOrder = false
+        column.sortOrder = false;
       }
 
       if (sorter && column.dataIndex === sorter.field) {
-        column.sortOrder = `${sorter.order.toLowerCase()}end` // ascend / descend
+        column.sortOrder = `${sorter.order.toLowerCase()}end`; // ascend / descend
       }
 
       if (filters && filters[column.dataIndex]) {
-        column.filteredValue = filters[column.dataIndex]
+        column.filteredValue = filters[column.dataIndex];
       } else {
-        column.filteredValue = null
+        column.filteredValue = null;
       }
 
       // if a filter has been set via props, prevent user from changing it
       if (propFilters && propFilters[column.dataIndex]) {
-        column.filters = []
+        column.filters = [];
       }
 
       if (column.remoteFilter) {
         column = {
           ...column,
-          ...this.remoteFilterConfig(column.remoteFilter),
-        }
+          ...this.remoteFilterConfig(column.remoteFilter)
+        };
       }
 
-      return column
-    })
+      return column;
+    });
 
     // Return both arrays of columns
-    return [processedColumns, columnsForTable]
-  }
+    return [processedColumns, columnsForTable];
+  };
 
   // Event for <ColumnSelector />
   onColumnSelectionChanged = columns => {
@@ -330,18 +339,18 @@ class DataTable extends React.Component {
         ...prevState,
         columnSelector: {
           ...prevState.columnSelector,
-          ...columns,
-        },
-      }
+          ...columns
+        }
+      };
 
-      return newState
-    })
-  }
+      return newState;
+    });
+  };
 
   render() {
     const {
-      params: { page, limit, search },
-    } = this.state
+      params: { page, limit, search }
+    } = this.state;
 
     const {
       intl,
@@ -354,9 +363,11 @@ class DataTable extends React.Component {
       settingsKey,
       customSearch,
       ...rest
-    } = this.props
+    } = this.props;
 
-    const [columnsForColumnSelector, columnsForTable] = this.processColumns(columns)
+    const [columnsForColumnSelector, columnsForTable] = this.processColumns(
+      columns
+    );
 
     const extra = (
       <Row type="flex" justify="space-between">
@@ -364,7 +375,7 @@ class DataTable extends React.Component {
           <Col cs={24} sm={8}>
             <Input.Search
               className="mb-4"
-              placeholder={intl.formatMessage({ id: 'datatable.search' })}
+              placeholder={intl.formatMessage({ id: "datatable.search" })}
               onSearch={this.handleSearch}
               value={search}
               onChange={this.handleSearchInputChange}
@@ -374,27 +385,27 @@ class DataTable extends React.Component {
 
         {!_.isUndefined(customSearch) && (
           <Col>
-            <div className="mb-4" style={{ display: 'inline-flex' }}>
+            <div className="mb-4" style={{ display: "inline-flex" }}>
               {customSearch}
             </div>
           </Col>
         )}
 
         <Col>
-          <div className="mb-4" style={{ display: 'inline-flex' }}>
+          <div className="mb-4" style={{ display: "inline-flex" }}>
             <Button.Group>
               <Tooltip
                 placement="top"
-                title={intl.formatMessage({ id: 'datatable.tooltips.clear' })}
+                title={intl.formatMessage({ id: "datatable.tooltips.clear" })}
               >
                 <Button icon="stop" onClick={this.handleClearFilters} />
               </Tooltip>
               <Tooltip
                 placement="top"
-                title={intl.formatMessage({ id: 'datatable.tooltips.refresh' })}
+                title={intl.formatMessage({ id: "datatable.tooltips.refresh" })}
               >
                 <Button icon="reload" onClick={this.handleRefresh}>
-                  {intl.formatMessage({ id: 'datatable.actions.refresh' })}
+                  {intl.formatMessage({ id: "datatable.actions.refresh" })}
                 </Button>
               </Tooltip>
             </Button.Group>
@@ -411,9 +422,13 @@ class DataTable extends React.Component {
             {exportConfig && (
               <Tooltip
                 placement="top"
-                title={intl.formatMessage({ id: 'datatable.tooltips.export' })}
+                title={intl.formatMessage({ id: "datatable.tooltips.export" })}
               >
-                <Button className="ml-2" icon="download" onClick={this.handleExportClick} />
+                <Button
+                  className="ml-2"
+                  icon="download"
+                  onClick={this.handleExportClick}
+                />
               </Tooltip>
             )}
 
@@ -421,7 +436,7 @@ class DataTable extends React.Component {
           </div>
         </Col>
       </Row>
-    )
+    );
 
     return (
       <div>
@@ -441,23 +456,23 @@ class DataTable extends React.Component {
             current: page,
             defaultPageSize: limit,
             showSizeChanger: true,
-            pageSizeOptions: ['10', '25', '50', '100', '200'],
-            total: pagination && pagination.total,
+            pageSizeOptions: ["10", "25", "50", "100", "200"],
+            total: pagination && pagination.total
           }}
           onRow={(record, rowIndex) => {
             return {
               onDoubleClick: event => {
                 if (rowDoubleClick) {
-                  rowDoubleClick(record, rowIndex, event)
+                  rowDoubleClick(record, rowIndex, event);
                 }
-              },
-            }
+              }
+            };
           }}
           {...rest}
         />
       </div>
-    )
+    );
   }
 }
 
-export default DataTable
+export default DataTable;

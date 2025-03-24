@@ -1,14 +1,14 @@
-import { networkActions } from 'lib'
+import { networkActions } from "../../../lib";
 
 const actions = {
-  ...networkActions('users'),
-}
+  ...networkActions("users")
+};
 
-export default actions
+export default actions;
 
 export function load(payload) {
   return {
     type: actions.LOAD,
-    payload,
-  }
+    payload
+  };
 }

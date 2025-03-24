@@ -1,15 +1,15 @@
-import React from 'react'
-import { Layout } from 'antd'
-import { Link, withRouter } from 'react-router-dom'
+import React from "react";
+import { Layout } from "antd";
+import { Link, withRouter } from "react-router-dom";
 
-import LanguageSelector from 'components/core/TopBar/LanguageSelector'
+import LanguageSelector from "../../components/core/TopBar/LanguageSelector";
 
-import styles from './style.module.scss'
+import styles from "./style.module.scss";
 
 @withRouter
 class LoginLayout extends React.PureComponent {
   render() {
-    const { children } = this.props
+    const { children } = this.props;
 
     return (
       <Layout>
@@ -27,8 +27,8 @@ class LoginLayout extends React.PureComponent {
           </div>
         </Layout.Content>
       </Layout>
-    )
+    );
   }
 }
 
-export default LoginLayout
+export default LoginLayout;

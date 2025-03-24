@@ -1,56 +1,56 @@
-import { Loadable } from 'lib'
+import { Loadable } from "../../lib";
 
-import en from './locales/en'
-import ro from './locales/ro'
+import en from "./locales/en";
+import ro from "./locales/ro";
 
-import users from './list/reducers'
-import usersSaga from './list/sagas'
+import users from "./list/reducers";
+import usersSaga from "./list/sagas";
 
-import rsintl from './redux/reduxSagaIntl/reducers'
-import rsintlSaga from './redux/reduxSagaIntl/sagas'
+import rsintl from "./redux/reduxSagaIntl/reducers";
+import rsintlSaga from "./redux/reduxSagaIntl/sagas";
 
 export default {
-  name: 'dashboard',
+  name: "dashboard",
   menu: [
     {
-      title: 'Dashboard',
-      key: 'dashboard',
-      url: '/dashboard',
-      icon: 'icmn icmn-home',
+      title: "Dashboard",
+      key: "dashboard",
+      url: "/dashboard",
+      icon: "icmn icmn-home"
       // roles: ['admin'],
       // permission: 'menu_dashboard'
     },
     {
-      title: 'Redux Saga Intl',
-      key: 'reduxSagaIntl',
-      url: '/reduxSagaIntl',
-    },
+      title: "Redux Saga Intl",
+      key: "reduxSagaIntl",
+      url: "/reduxSagaIntl"
+    }
   ],
   routes: [
     {
-      path: '/dashboard',
-      component: Loadable(() => import('./pages')),
-      exact: true,
+      path: "/dashboard",
+      component: Loadable(() => import("./pages")),
+      exact: true
     },
     {
-      path: '/modalJumpTab',
-      component: Loadable(() => import('./pages/modalJumpTab')),
+      path: "/modalJumpTab",
+      component: Loadable(() => import("./pages/modalJumpTab")),
       exact: true,
-      modal: true,
+      modal: true
     },
     {
-      path: '/reduxSagaIntl',
-      component: Loadable(() => import('./pages/reduxSagaIntl')),
-      exact: true,
-    },
+      path: "/reduxSagaIntl",
+      component: Loadable(() => import("./pages/reduxSagaIntl")),
+      exact: true
+    }
   ],
   locales: {
     ro,
-    en,
+    en
   },
   reducers: {
     users,
-    rsintl,
+    rsintl
   },
-  sagas: [usersSaga(), rsintlSaga()],
-}
+  sagas: [usersSaga(), rsintlSaga()]
+};

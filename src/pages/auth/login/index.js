@@ -1,30 +1,29 @@
-import React, { Component } from 'react'
-import { Form, Input, Button } from 'antd'
-import { Helmet } from 'react-helmet'
-import { connect } from 'react-redux'
-import styles from './style.module.scss'
+import React, { Component } from "react";
+import { Form, Input, Button } from "antd";
+import { Helmet } from "react-helmet";
+import { connect } from "react-redux";
+import styles from "./style.module.scss";
 
-@Form.create()
+// @Form.create()
 @connect(({ user }) => ({ user }))
 class Login extends Component {
   onSubmit = event => {
-    event.preventDefault()
-    const { form, dispatch } = this.props
+    event.preventDefault();
+    const { form, dispatch } = this.props;
     form.validateFields((error, values) => {
       if (!error) {
         dispatch({
-          type: 'user/LOGIN',
-          payload: values,
-        })
+          type: "user/LOGIN",
+          payload: values
+        });
       }
-    })
-  }
+    });
+  };
 
   render() {
     const {
-      form,
-      user: { loading },
-    } = this.props
+      user: { loading }
+    } = this.props;
     return (
       <div>
         <Helmet title="Login" />
@@ -44,17 +43,35 @@ class Login extends Component {
 
                   <br />
 
-                  <Form layout="vertical" hideRequiredMark onSubmit={this.onSubmit}>
-                    <Form.Item label="Email">
-                      {form.getFieldDecorator('email', {
-                        rules: [{ required: true, message: 'Please input your e-mail address' }],
-                      })(<Input size="default" />)}
+                  <Form
+                    layout="vertical"
+                    hideRequiredMark
+                    onSubmit={this.onSubmit}
+                  >
+                    <Form.Item
+                      label="Email"
+                      name="email"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your e-mail address"
+                        }
+                      ]}
+                    >
+                      <Input size="default" />
                     </Form.Item>
 
-                    <Form.Item label="Password">
-                      {form.getFieldDecorator('password', {
-                        rules: [{ required: true, message: 'Please input your password' }],
-                      })(<Input size="default" type="password" />)}
+                    <Form.Item
+                      label="Password"
+                      name="password"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your password"
+                        }
+                      ]}
+                    >
+                      <Input.Password size="default" type="password" />
                     </Form.Item>
 
                     <Button
@@ -72,8 +89,8 @@ class Login extends Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default Login
+export default Login;

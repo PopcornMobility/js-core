@@ -1,18 +1,18 @@
-import React from 'react'
-import { Layout } from 'antd'
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
-import classNames from 'classnames'
-import TopBar from 'components/core/TopBar'
-import Menu from 'components/core/Menu'
+import React from "react";
+import { Layout } from "antd";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import classNames from "classnames";
+import TopBar from "../../components/core/TopBar";
+import Menu from "../../components/core/Menu";
 
 const mapStateToProps = ({ settings }) => ({
   isBorderless: settings.isBorderless,
   isSquaredBorders: settings.isSquaredBorders,
   isFixedWidth: settings.isFixedWidth,
   isMenuShadow: settings.isMenuShadow,
-  isMenuTop: settings.isMenuTop,
-})
+  isMenuTop: settings.isMenuTop
+});
 
 @withRouter
 @connect(mapStateToProps)
@@ -25,8 +25,8 @@ class MainLayout extends React.PureComponent {
       isFixedWidth,
       isMenuShadow,
       isMenuTop,
-      menu,
-    } = this.props
+      menu
+    } = this.props;
     return (
       <Layout
         className={classNames({
@@ -34,7 +34,7 @@ class MainLayout extends React.PureComponent {
           settings__squaredBorders: isSquaredBorders,
           settings__fixedWidth: isFixedWidth,
           settings__menuShadow: isMenuShadow,
-          settings__menuTop: isMenuTop,
+          settings__menuTop: isMenuTop
         })}
       >
         <Menu menu={menu} />
@@ -42,14 +42,14 @@ class MainLayout extends React.PureComponent {
           <Layout.Header>
             <TopBar />
           </Layout.Header>
-          <Layout.Content style={{ height: '100%', position: 'relative' }}>
+          <Layout.Content style={{ height: "100%", position: "relative" }}>
             <div className="utils__content">{children}</div>
           </Layout.Content>
           <Layout.Footer />
         </Layout>
       </Layout>
-    )
+    );
   }
 }
 
-export default MainLayout
+export default MainLayout;

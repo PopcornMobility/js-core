@@ -1,29 +1,28 @@
-import React from 'react'
-import { Tabs, Icon, Modal } from 'antd'
-import { Helmet } from 'react-helmet'
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
-import classnames from 'classnames'
+import React from "react";
+import { Tabs, Modal } from "antd";
+import { Helmet } from "react-helmet";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
-const { TabPane } = Tabs
+const { TabPane } = Tabs;
 
 @withRouter
 @connect(({ settings }) => ({ settings }))
 class DetailsModal extends React.Component {
   state = {
-    modalVisible: true,
-  }
+    modalVisible: true
+  };
 
   handleCancel = () => {
     const {
       history,
       location: { state },
-      backLocation,
-    } = this.props
+      backLocation
+    } = this.props;
 
     this.setState({
-      modalVisible: false,
-    })
+      modalVisible: false
+    });
 
     // when opening an user profile url directly
     // (by clicking a link or typing it in the browser address bar)
@@ -31,14 +30,14 @@ class DetailsModal extends React.Component {
     // (e.g. go back to a blank page), so we should avoid it
     // modal=true is only set while normally navigating the app
     if (state && state.modal) {
-      history.goBack()
+      history.goBack();
     } else if (backLocation) {
-      history.push(backLocation)
+      history.push(backLocation);
     }
-  }
+  };
 
   render() {
-    const { modalVisible } = this.state
+    const { modalVisible } = this.state;
     const {
       settings: { isMobileView },
       title: modalTitle,
@@ -46,22 +45,22 @@ class DetailsModal extends React.Component {
       children,
       tabs,
       location: { hash, state: { selectedTab } = {} },
-      history,
-    } = this.props
+      history
+    } = this.props;
 
     const tabTitle = (icon, title) => (
       <span>
-        <Icon className={classnames({ 'mr-0': isMobileView })} type={icon} />
-        {isMobileView ? '' : ` ${title}`}
+        {icon}
+        {isMobileView ? "" : ` ${title}`}
       </span>
-    )
+    );
 
-    let defaultActiveKey = ''
+    let defaultActiveKey = "";
 
-    if (hash !== '') {
-      defaultActiveKey = hash.replace('#', '')
+    if (hash !== "") {
+      defaultActiveKey = hash.replace("#", "");
     } else {
-      defaultActiveKey = selectedTab
+      defaultActiveKey = selectedTab;
     }
 
     return (
@@ -75,17 +74,20 @@ class DetailsModal extends React.Component {
               {modalTitle} {titleComponent}
             </div>
           }
-          style={{ maxWidth: isMobileView ? null : 1240, top: isMobileView ? 72 : 80 }}
-          width={isMobileView ? null : '90%'}
+          style={{
+            maxWidth: isMobileView ? null : 1240,
+            top: isMobileView ? 72 : 80
+          }}
+          width={isMobileView ? null : "90%"}
           onCancel={this.handleCancel}
           footer={null}
         >
           {tabs && (
             <Tabs
               onTabClick={key => {
-                history.replace({ hash: key, state: { modal: true } })
+                history.replace({ hash: key, state: { modal: true } });
               }}
-              type={isMobileView ? 'card' : 'line'}
+              type={isMobileView ? "card" : "line"}
               defaultActiveKey={defaultActiveKey}
             >
               {tabs.map(tab => (
@@ -102,8 +104,8 @@ class DetailsModal extends React.Component {
           {children}
         </Modal>
       </div>
-    )
+    );
   }
 }
 
-export default DetailsModal
+export default DetailsModal;

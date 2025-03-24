@@ -1,16 +1,18 @@
-import React, { Component } from 'react'
-import { Admin, Authorize } from 'lib'
-import testModules from 'testModules'
-import ExtraTopBar from 'testModules/components/ExtraTopBar'
+import React, { Component } from "react";
+import testModules from "./testModules";
+import ExtraTopBar from "./testModules/components/ExtraTopBar";
+import { Admin, Authorize } from "./lib";
 
 const topBarExtra = (
-  <Authorize roles={['admin']}>
+  <Authorize roles={["admin"]}>
     <ExtraTopBar />
   </Authorize>
-)
+);
 
 export default class App extends Component {
   render() {
-    return <Admin title="CA Admin Core" modules={testModules} topBarExtra={topBarExtra} />
+    return (
+      <Admin title="JS Core" modules={testModules} topBarExtra={topBarExtra} />
+    );
   }
 }

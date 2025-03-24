@@ -1,58 +1,58 @@
-import * as React from 'react'
-import { ConfigProvider } from 'antd'
-import { RawIntlProvider } from 'react-intl'
-import { connect } from 'react-redux'
+import * as React from "react";
+import { ConfigProvider } from "antd";
+import { RawIntlProvider } from "react-intl";
+import { connect } from "react-redux";
 
-import english from 'locales/en'
-import romanian from 'locales/ro'
-import ukrainean from 'locales/uk'
-import russian from 'locales/ru'
+import english from "../../../locales/en";
+import romanian from "../../../locales/ro";
+// import ukrainean from '../../../locales/uk'
+// import russian from '../../../locales/ru'
 
-import { IntlSetup } from './intlSetup'
+import { IntlSetup } from "./intlSetup";
 
 const defaultLocale = {
   en: english,
-  ro: romanian,
-  uk: ukrainean,
-  ru: russian,
-}
+  ro: romanian
+  // uk: ukrainean,
+  // ru: russian,
+};
 
-const mapStateToProps = ({ settings }) => ({ lang: settings.locale })
+const mapStateToProps = ({ settings }) => ({ lang: settings.locale });
 
 const Localization = props => {
-  const { children, lang, locales } = props
+  const { children, lang, locales } = props;
 
-  const CoreLocale = defaultLocale[lang] || english
+  const CoreLocale = defaultLocale[lang] || english;
 
   const processMessages = messages => {
-    const reindexedMessages = {}
+    const reindexedMessages = {};
 
     Object.values(messages).forEach(chunk => {
       Object.keys(chunk).forEach(language => {
         reindexedMessages[language] = {
           ...reindexedMessages[language],
-          ...chunk[language],
-        }
-      })
-    })
+          ...chunk[language]
+        };
+      });
+    });
 
-    return reindexedMessages
-  }
+    return reindexedMessages;
+  };
 
-  const ModuleLocale = processMessages(locales)
+  const ModuleLocale = processMessages(locales);
 
   const AppLocale = {
     ...CoreLocale.messages,
-    ...ModuleLocale[lang],
-  }
+    ...ModuleLocale[lang]
+  };
 
-  const intl = IntlSetup({ locale: lang, messages: AppLocale })
+  const intl = IntlSetup({ locale: lang, messages: AppLocale });
 
   return (
     <ConfigProvider locale={CoreLocale.antdData}>
       <RawIntlProvider value={intl}>{children}</RawIntlProvider>
     </ConfigProvider>
-  )
-}
+  );
+};
 
-export default connect(mapStateToProps)(Localization)
+export default connect(mapStateToProps)(Localization);

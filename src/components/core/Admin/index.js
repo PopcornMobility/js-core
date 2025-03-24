@@ -1,128 +1,133 @@
-import React, { Component } from 'react'
-import { logger } from 'redux-logger'
-import { Provider } from 'react-redux'
-import thunk from 'redux-thunk'
-import createSagaMiddleware from 'redux-saga'
-import { routerMiddleware } from 'connected-react-router'
-import { createStore, applyMiddleware, compose } from 'redux'
-import { createBrowserHistory } from 'history'
-import * as serviceWorker from 'serviceWorker'
+import React, { Component } from "react";
+import { logger } from "redux-logger";
+import { Provider } from "react-redux";
+import thunk from "redux-thunk";
+import createSagaMiddleware from "redux-saga";
+import { routerMiddleware } from "connected-react-router";
+import { createStore, applyMiddleware, compose } from "redux";
+import { createBrowserHistory } from "history";
+import * as serviceWorker from "../../../serviceWorker";
 
-import Router from 'components/core/Router'
-import Localization from 'components/core/Localization'
-import defaultModules from 'modules'
-import initReducers from 'redux/reducers'
-import initSagas from 'redux/sagas'
+import Router from "../Router";
+import Localization from "../Localization";
+import defaultModules from "../../../modules";
+import initReducers from "../../../redux/reducers";
+import initSagas from "../../../redux/sagas";
 
-import { IntlReduxMiddleware } from '../Localization/IntlReduxMiddleware'
+import { IntlReduxMiddleware } from "../Localization/IntlReduxMiddleware";
 
 // app styles
-import 'assets/styles/global.scss'
+import "../../../assets/styles/global.scss";
 
 // disable cache-first approach
-serviceWorker.unregister()
+serviceWorker.unregister();
 
-const history = createBrowserHistory()
-const sagaMiddleware = createSagaMiddleware()
-const routeMiddleware = routerMiddleware(history)
-const middlewares = [IntlReduxMiddleware, thunk, sagaMiddleware, routeMiddleware]
+const history = createBrowserHistory();
+const sagaMiddleware = createSagaMiddleware();
+const routeMiddleware = routerMiddleware(history);
+const middlewares = [
+  IntlReduxMiddleware,
+  thunk,
+  sagaMiddleware,
+  routeMiddleware
+];
 
 // Redux Logger
-if (process.env.REACT_APP_REDUX_LOGGER === 'true') {
-  middlewares.push(logger)
+if (process.env.REACT_APP_REDUX_LOGGER === "true") {
+  middlewares.push(logger);
 }
 
 const processModules = (modules = []) => {
-  modules = [...defaultModules, ...modules]
+  modules = [...defaultModules, ...modules];
 
   // ensure module uniqueness and correct ordering
-  const processedModules = new Map()
+  const processedModules = new Map();
 
   modules.forEach(module => {
-    processedModules.set(module.name, module)
-  })
+    processedModules.set(module.name, module);
+  });
 
-  return Array.from(processedModules.values())
-}
+  return Array.from(processedModules.values());
+};
 
 const createAdminStore = modules => {
-  let reducers = {}
-  let sagas = []
+  let reducers = {};
+  let sagas = [];
 
   modules.forEach(module => {
     if (module.reducers) {
       reducers = {
         ...reducers,
-        ...module.reducers,
-      }
+        ...module.reducers
+      };
     }
 
     if (module.sagas) {
-      sagas = [...sagas, ...module.sagas]
+      sagas = [...sagas, ...module.sagas];
     }
-  })
+  });
 
   const store = createStore(
     initReducers({ history }, reducers),
-    compose(applyMiddleware(...middlewares)),
-  )
-  sagaMiddleware.run(initSagas({}, sagas))
+    compose(applyMiddleware(...middlewares))
+  );
+  sagaMiddleware.run(initSagas({}, sagas));
 
-  return store
-}
+  return store;
+};
 
 const getRoutes = modules => {
-  let routes = []
+  let routes = [];
 
   modules.forEach(module => {
     if (module.routes) {
-      routes = [...routes, ...module.routes]
+      routes = [...routes, ...module.routes];
     }
-  })
+  });
 
-  return routes
-}
+  return routes;
+};
 
 const getMenu = modules => {
-  let left = []
+  let left = [];
 
   modules.forEach(module => {
     if (module.menu) {
-      left = [...left, ...module.menu]
+      left = [...left, ...module.menu];
     }
-  })
+  });
 
   return {
     left,
-    top: [],
-  }
-}
+    top: []
+  };
+};
 
 const getLocales = modules => {
-  const locales = []
+  const locales = [];
 
   modules.forEach(module => {
     if (module.locales) {
-      locales.push(module.locales)
+      locales.push(module.locales);
     }
-  })
+  });
 
-  return locales
-}
+  return locales;
+};
 
-export const AdminContext = React.createContext({})
+export const AdminContext = React.createContext({});
 
 export default class Admin extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
-    const { modules } = this.props
+    const { modules } = this.props;
 
-    this.modules = processModules(modules)
+    this.modules = processModules(modules);
   }
 
   render() {
-    const { title } = this.props
+    const { title } = this.props;
 
     return (
       <Provider store={createAdminStore(this.modules)}>
@@ -137,6 +142,6 @@ export default class Admin extends Component {
           </Localization>
         </AdminContext.Provider>
       </Provider>
-    )
+    );
   }
 }

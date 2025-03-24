@@ -1,39 +1,40 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { Link, withRouter } from 'react-router-dom'
-import { Menu, Layout, Icon, Tag, Popover } from 'antd'
-import store from 'store'
-import { Scrollbars } from 'react-custom-scrollbars'
-import _ from 'lodash'
+import React from "react";
+import { connect } from "react-redux";
+import { Link, withRouter } from "react-router-dom";
+import { Menu, Layout, Tag, Popover } from "antd";
+import { LockOutlined } from "@ant-design/icons";
+import store from "store";
+import { Scrollbars } from "react-custom-scrollbars";
+import _ from "lodash";
 
-import { checkAccess } from 'utils/auth'
+import { checkAccess } from "../../../../utils/auth";
 
-import styles from './style.module.scss'
+import styles from "./style.module.scss";
 
-const { Sider } = Layout
-const { SubMenu, Divider } = Menu
+const { Sider } = Layout;
+const { SubMenu, Divider } = Menu;
 
-const isDebug = process.env.REACT_APP_PERMISSIONS_DEBUG === 'true'
+const isDebug = process.env.REACT_APP_PERMISSIONS_DEBUG === "true";
 
 const DebugPopoverTitle = props => {
-  const { isAuthorized } = props
-  const color = isAuthorized ? 'green' : 'red'
+  const { isAuthorized } = props;
+  const color = isAuthorized ? "green" : "red";
 
   return (
-    <span style={{ color, fontWeight: 'bold' }}>
-      {isAuthorized ? 'Authorized' : 'Not authorized'}
+    <span style={{ color, fontWeight: "bold" }}>
+      {isAuthorized ? "Authorized" : "Not authorized"}
     </span>
-  )
-}
+  );
+};
 
 const DebugPopoverContent = props => {
-  const { permissions, roles } = props
+  const { permissions, roles } = props;
 
   return (
     <>
       {roles && (
         <div>
-          <b>Roles:</b>{' '}
+          <b>Roles:</b>{" "}
           {roles.map(role => (
             <Tag key={role} className="mb-1">
               {role}
@@ -43,7 +44,7 @@ const DebugPopoverContent = props => {
       )}
       {permissions && (
         <div>
-          <b>Permissions:</b>{' '}
+          <b>Permissions:</b>{" "}
           {permissions.map(perm => (
             <Tag key={perm} className="mb-1">
               {perm}
@@ -52,216 +53,251 @@ const DebugPopoverContent = props => {
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
 const DebugLock = props => {
-  const { isAuthorized, ...rest } = props
-  const color = isAuthorized ? 'green' : 'red'
+  const { isAuthorized, ...rest } = props;
+  const color = isAuthorized ? "green" : "red";
   const style = {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 5,
     padding: 2,
     color,
-    position: 'absolute',
+    position: "absolute",
     right: -40,
-    top: 0,
-  }
+    top: 0
+  };
 
-  return <Icon {...rest} type="lock" style={style} className="ml-2" />
-}
+  return <LockOutlined {...rest} style={style} className="ml-2" />;
+};
 
 const mapStateToProps = ({ menu, settings, user }) => ({
   user,
   badges: menu.badges,
   isMenuCollapsed: settings.isMenuCollapsed,
   isMobileView: settings.isMobileView,
-  isLightTheme: settings.isLightTheme,
-})
+  isLightTheme: settings.isLightTheme
+});
 
 @withRouter
 @connect(mapStateToProps)
 class MenuLeft extends React.Component {
   state = {
-    selectedKeys: store.get('app.menu.selectedKeys') || [],
-    openedKeys: store.get('app.menu.openedKeys') || [],
-  }
+    selectedKeys: store.get("app.menu.selectedKeys") || [],
+    openedKeys: store.get("app.menu.openedKeys") || []
+  };
 
   componentDidMount() {
-    this.setSelectedKeys()
+    this.setSelectedKeys();
   }
 
   componentDidUpdate(prevProps) {
-    const { isMenuCollapsed, isMobileView } = this.props
+    const { isMenuCollapsed, isMobileView } = this.props;
 
     if (prevProps.isMenuCollapsed !== isMenuCollapsed && !isMobileView) {
-      this.clearOpenedKeys()
+      this.clearOpenedKeys();
     }
   }
 
   clearOpenedKeys = () => {
     this.setState({
-      openedKeys: [],
-    })
-    store.set('app.menu.openedKeys', [])
-  }
+      openedKeys: []
+    });
+    store.set("app.menu.openedKeys", []);
+  };
 
   setSelectedKeys = () => {
-    const { menu, location } = this.props
+    const { menu, location } = this.props;
 
     const flattenItems = (items, key) =>
       items.reduce((flattenedItems, item) => {
-        flattenedItems.push(item)
+        flattenedItems.push(item);
         if (Array.isArray(item[key])) {
-          return flattenedItems.concat(flattenItems(item[key], key))
+          return flattenedItems.concat(flattenItems(item[key], key));
         }
-        return flattenedItems
-      }, [])
+        return flattenedItems;
+      }, []);
 
-    const selectedItem = _.find(flattenItems(menu, 'children'), ['url', location.pathname])
+    const selectedItem = _.find(flattenItems(menu, "children"), [
+      "url",
+      location.pathname
+    ]);
 
     const {
-      selectedKeys: [currentSelection],
-    } = this.state
+      selectedKeys: [currentSelection]
+    } = this.state;
 
     // only update state when necessary
     if (selectedItem && selectedItem.key !== currentSelection) {
       this.setState({
-        selectedKeys: selectedItem ? [selectedItem.key] : [],
-      })
+        selectedKeys: selectedItem ? [selectedItem.key] : []
+      });
     }
-  }
+  };
 
   onCollapse = (value, type) => {
-    const { dispatch, isMenuCollapsed } = this.props
-    if (type === 'responsive' && isMenuCollapsed) {
-      return
+    const { dispatch, isMenuCollapsed } = this.props;
+    if (type === "responsive" && isMenuCollapsed) {
+      return;
     }
 
     dispatch({
-      type: 'settings/CHANGE_SETTING',
+      type: "settings/CHANGE_SETTING",
       payload: {
-        setting: 'isMenuCollapsed',
-        value: !isMenuCollapsed,
-      },
-    })
+        setting: "isMenuCollapsed",
+        value: !isMenuCollapsed
+      }
+    });
 
     this.setState({
-      openedKeys: [],
-    })
-  }
+      openedKeys: []
+    });
+  };
 
   onOpenChange = openedKeys => {
-    store.set('app.menu.openedKeys', openedKeys)
+    store.set("app.menu.openedKeys", openedKeys);
     this.setState({
-      openedKeys,
-    })
-  }
+      openedKeys
+    });
+  };
 
   handleClick = e => {
-    store.set('app.menu.selectedKeys', [e.key])
+    store.set("app.menu.selectedKeys", [e.key]);
     this.setState({
-      selectedKeys: [e.key],
-    })
-  }
+      selectedKeys: [e.key]
+    });
+  };
 
   generateMenuItems = () => {
     const {
       menu = [],
       badges,
-      user: { roles: userRoles, permissions: userPermissions },
-    } = this.props
+      user: { roles: userRoles, permissions: userPermissions }
+    } = this.props;
 
     const isAuthorized = (roles, permissions) => {
-      return checkAccess(roles, userRoles) && checkAccess(permissions, userPermissions)
-    }
+      return (
+        checkAccess(roles, userRoles) &&
+        checkAccess(permissions, userPermissions)
+      );
+    };
 
     const generateItem = item => {
-      const { key, title, url, icon, disabled, badge, roles, permissions } = item
+      const {
+        key,
+        title,
+        url,
+        icon,
+        disabled,
+        badge,
+        roles,
+        permissions
+      } = item;
 
       if (item.divider) {
-        return <Divider key={Math.random()} />
+        return <Divider key={Math.random()} />;
       }
 
-      const authorized = isAuthorized(roles, permissions)
+      const authorized = isAuthorized(roles, permissions);
 
       const debugPopover = isDebug && (
         <Popover
           title={<DebugPopoverTitle isAuthorized={authorized} />}
-          content={<DebugPopoverContent permissions={permissions} roles={roles} />}
+          content={
+            <DebugPopoverContent permissions={permissions} roles={roles} />
+          }
           zIndex={1050}
         >
           <DebugLock isAuthorized={authorized} />
         </Popover>
-      )
+      );
 
       if (item.url) {
         const itemWithUrl = item.target ? (
           <a href={url} target={item.target} rel="noopener noreferrer">
-            {icon && <span className={`${icon} ${styles.icon} icon-collapsed-hidden`} />}
+            {icon && (
+              <span
+                className={`${icon} ${styles.icon} icon-collapsed-hidden`}
+              />
+            )}
             <span className={styles.title}>
               {title}
               {debugPopover}
             </span>
             {badge && (
-              <span className="badge badge-light badge-collapsed-hidden ml-2">{badges[badge]}</span>
+              <span className="badge badge-light badge-collapsed-hidden ml-2">
+                {badges[badge]}
+              </span>
             )}
           </a>
         ) : (
           <Link to={url}>
-            {icon && <span className={`${icon} ${styles.icon} icon-collapsed-hidden`} />}
+            {icon && (
+              <span
+                className={`${icon} ${styles.icon} icon-collapsed-hidden`}
+              />
+            )}
             <span className={styles.title}>
               {title}
               {debugPopover}
             </span>
             {badge && (
-              <span className="badge badge-light badge-collapsed-hidden ml-2">{badges[badge]}</span>
+              <span className="badge badge-light badge-collapsed-hidden ml-2">
+                {badges[badge]}
+              </span>
             )}
           </Link>
-        )
+        );
 
         return (
           <Menu.Item key={key} disabled={disabled}>
             {itemWithUrl}
           </Menu.Item>
-        )
+        );
       }
 
       const normalItem = (
         <Menu.Item key={key} disabled={disabled}>
-          {icon && <span className={`${icon} ${styles.icon} icon-collapsed-hidden`} />}
+          {icon && (
+            <span className={`${icon} ${styles.icon} icon-collapsed-hidden`} />
+          )}
           <span className={styles.title}>
             {title}
             {debugPopover}
           </span>
           {badge && (
-            <span className="badge badge-light badge-collapsed-hidden ml-2">{badges[badge]}</span>
+            <span className="badge badge-light badge-collapsed-hidden ml-2">
+              {badges[badge]}
+            </span>
           )}
         </Menu.Item>
-      )
+      );
 
-      return normalItem
-    }
+      return normalItem;
+    };
 
     const generateSubmenu = items =>
       items.map(menuItem => {
-        const { title, icon, key, children, roles, permissions } = menuItem
+        const { title, icon, key, children, roles, permissions } = menuItem;
 
-        const authorized = isAuthorized(roles, permissions)
+        const authorized = isAuthorized(roles, permissions);
 
         if (!isDebug && !authorized) {
-          return null
+          return null;
         }
 
         const debugPopover = isDebug && (
           <Popover
             title={<DebugPopoverTitle isAuthorized={authorized} />}
-            content={<DebugPopoverContent permissions={permissions} roles={roles} />}
+            content={
+              <DebugPopoverContent permissions={permissions} roles={roles} />
+            }
             zIndex={1050}
           >
             <DebugLock isAuthorized={authorized} />
           </Popover>
-        )
+        );
 
         if (children) {
           const titleComponent = (
@@ -272,72 +308,78 @@ class MenuLeft extends React.Component {
               </span>
               {icon && <span className={`${icon} ${styles.icon}`} />}
             </span>
-          )
+          );
 
           return (
             <SubMenu title={titleComponent} key={key}>
               {generateSubmenu(children)}
             </SubMenu>
-          )
+          );
         }
 
-        return generateItem(menuItem)
-      })
+        return generateItem(menuItem);
+      });
 
-    return generateSubmenu(menu)
-  }
+    return generateSubmenu(menu);
+  };
 
   render() {
-    const { selectedKeys, openedKeys } = this.state
-    const { isMobileView, isMenuCollapsed, isLightTheme } = this.props
+    const { selectedKeys, openedKeys } = this.state;
+    const { isMobileView, isMenuCollapsed, isLightTheme } = this.props;
     const menuSettings = isMobileView
       ? {
           width: 256,
           collapsible: false,
           collapsed: false,
-          onCollapse: this.onCollapse,
+          onCollapse: this.onCollapse
         }
       : {
           width: 256,
           collapsible: true,
           collapsed: isMenuCollapsed,
           onCollapse: this.onCollapse,
-          breakpoint: 'lg',
-        }
+          breakpoint: "lg"
+        };
 
-    const menu = this.generateMenuItems()
+    const menu = this.generateMenuItems();
 
     return (
       <Sider
         {...menuSettings}
-        className={isLightTheme ? `${styles.menu} ${styles.light}` : styles.menu}
+        className={
+          isLightTheme ? `${styles.menu} ${styles.light}` : styles.menu
+        }
       >
         <div className={styles.logo}>
           <div className={styles.logoContainer}>
             <img
-              src={`/resources/images/logo${menuSettings.collapsed ? '-mobile' : ''}.png`}
+              src={`/resources/images/logo${
+                menuSettings.collapsed ? "-mobile" : ""
+              }.png`}
               alt=""
             />
           </div>
         </div>
         <Scrollbars
-          className={isMobileView ? styles.scrollbarMobile : styles.scrollbarDesktop}
+          className={
+            isMobileView ? styles.scrollbarMobile : styles.scrollbarDesktop
+          }
           renderThumbVertical={({ style, ...props }) => (
             <div
               {...props}
               style={{
                 ...style,
-                width: '4px',
-                borderRadius: 'inherit',
-                backgroundColor: '#c5cdd2',
-                left: '1px',
+                width: "4px",
+                borderRadius: "inherit",
+                backgroundColor: "#c5cdd2",
+                left: "1px"
               }}
             />
           )}
           autoHide
         >
           <Menu
-            theme={isLightTheme ? 'light' : 'dark'}
+            theme={isLightTheme ? "light" : "dark"}
             onClick={this.handleClick}
             selectedKeys={selectedKeys}
             openKeys={openedKeys}
@@ -349,8 +391,8 @@ class MenuLeft extends React.Component {
           </Menu>
         </Scrollbars>
       </Sider>
-    )
+    );
   }
 }
 
-export default MenuLeft
+export default MenuLeft;
