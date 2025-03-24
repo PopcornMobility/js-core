@@ -1,20 +1,13 @@
-import "antd/es/modal/style";
-import _Modal from "antd/es/modal";
-import "antd/es/icon/style";
-import _Icon from "antd/es/icon";
-import "antd/es/tabs/style";
-import _Tabs from "antd/es/tabs";
-
 var _dec, _class, _temp;
 
-import React from 'react';
-import { Helmet } from 'react-helmet';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import classnames from 'classnames';
+import React from "react";
+import { Tabs, Modal } from "antd";
+import { Helmet } from "react-helmet";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 const {
   TabPane
-} = _Tabs;
+} = Tabs;
 let DetailsModal = (_dec = connect(({
   settings
 }) => ({
@@ -71,34 +64,29 @@ let DetailsModal = (_dec = connect(({
       history
     } = this.props;
 
-    const tabTitle = (icon, title) => /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement(_Icon, {
-      className: classnames({
-        'mr-0': isMobileView
-      }),
-      type: icon
-    }), isMobileView ? '' : ` ${title}`);
+    const tabTitle = (icon, title) => /*#__PURE__*/React.createElement("span", null, icon, isMobileView ? "" : ` ${title}`);
 
-    let defaultActiveKey = '';
+    let defaultActiveKey = "";
 
-    if (hash !== '') {
-      defaultActiveKey = hash.replace('#', '');
+    if (hash !== "") {
+      defaultActiveKey = hash.replace("#", "");
     } else {
       defaultActiveKey = selectedTab;
     }
 
     return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Helmet, {
       title: modalTitle
-    }), /*#__PURE__*/React.createElement(_Modal, {
+    }), /*#__PURE__*/React.createElement(Modal, {
       visible: modalVisible,
       title: /*#__PURE__*/React.createElement("div", null, modalTitle, " ", titleComponent),
       style: {
         maxWidth: isMobileView ? null : 1240,
         top: isMobileView ? 72 : 80
       },
-      width: isMobileView ? null : '90%',
+      width: isMobileView ? null : "90%",
       onCancel: this.handleCancel,
       footer: null
-    }, tabs && /*#__PURE__*/React.createElement(_Tabs, {
+    }, tabs && /*#__PURE__*/React.createElement(Tabs, {
       onTabClick: key => {
         history.replace({
           hash: key,
@@ -107,7 +95,7 @@ let DetailsModal = (_dec = connect(({
           }
         });
       },
-      type: isMobileView ? 'card' : 'line',
+      type: isMobileView ? "card" : "line",
       defaultActiveKey: defaultActiveKey
     }, tabs.map(tab => /*#__PURE__*/React.createElement(TabPane, {
       tab: tabTitle(tab.icon, tab.title),

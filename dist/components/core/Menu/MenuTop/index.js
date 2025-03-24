@@ -1,18 +1,16 @@
-import "antd/es/menu/style";
-import _Menu from "antd/es/menu";
-
 var _dec, _class, _temp;
 
 import React from 'react';
 import { connect } from 'react-redux';
+import { Menu } from 'antd';
 import { Link, withRouter } from 'react-router-dom';
 import store from 'store';
 import _ from 'lodash';
-import styles from "./style.module.scss";
+import styles from './style.module.scss';
 const {
   SubMenu,
   Divider
-} = _Menu;
+} = Menu;
 
 const mapStateToProps = ({
   menu,
@@ -97,7 +95,7 @@ let MenuTop = (_dec = connect(mapStateToProps), withRouter(_class = _dec(_class 
         }
 
         if (item.url) {
-          return /*#__PURE__*/React.createElement(_Menu.Item, {
+          return /*#__PURE__*/React.createElement(Menu.Item, {
             key: key,
             disabled: disabled
           }, item.target ? /*#__PURE__*/React.createElement("a", {
@@ -121,7 +119,7 @@ let MenuTop = (_dec = connect(mapStateToProps), withRouter(_class = _dec(_class 
           }, "PRO")));
         }
 
-        return /*#__PURE__*/React.createElement(_Menu.Item, {
+        return /*#__PURE__*/React.createElement(Menu.Item, {
           key: key,
           disabled: disabled
         }, icon && /*#__PURE__*/React.createElement("span", {
@@ -195,7 +193,7 @@ let MenuTop = (_dec = connect(mapStateToProps), withRouter(_class = _dec(_class 
     }, /*#__PURE__*/React.createElement("img", {
       src: "resources/images/logo-inverse.png",
       alt: "logo"
-    }))), /*#__PURE__*/React.createElement(_Menu, {
+    }))), /*#__PURE__*/React.createElement(Menu, {
       theme: isLightTheme ? 'light' : 'dark',
       onClick: this.handleClick,
       selectedKeys: selectedKeys,

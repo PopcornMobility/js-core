@@ -1,10 +1,10 @@
 var _dec, _class, _temp;
 
-import React, { Fragment } from 'react';
-import { withRouter, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
-import NProgress from 'nprogress';
-import { Helmet } from 'react-helmet';
+import React, { Fragment } from "react";
+import { withRouter, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import NProgress from "nprogress";
+import { Helmet } from "react-helmet";
 import Loader from "../components/core/Loader";
 import PublicLayout from "./Public";
 import LoginLayout from "./Login";
@@ -21,7 +21,7 @@ let IndexLayout = (_dec = connect(({
 })), withRouter(_class = _dec(_class = (_temp = class IndexLayout extends React.PureComponent {
   constructor(...args) {
     super(...args);
-    this.previousPath = '';
+    this.previousPath = "";
   }
 
   componentDidUpdate(prevProps) {
@@ -64,21 +64,21 @@ let IndexLayout = (_dec = connect(({
     }, 500); // Layout Rendering
 
     const getLayout = () => {
-      if (pathname === '/') {
-        return 'public';
+      if (pathname === "/") {
+        return "public";
       }
 
       if (/^\/auth(?=\/|$)/i.test(pathname)) {
-        return 'login';
+        return "login";
       }
 
-      return 'main';
+      return "main";
     };
 
     const Container = Layouts[getLayout()];
     const isUserAuthorized = user.authorized;
     const isUserLoading = user.loading;
-    const isLoginLayout = getLayout() === 'login';
+    const isLoginLayout = getLayout() === "login";
 
     const BootstrappedLayout = () => {
       // show loader when user in check authorization process, not authorized yet and not on login pages
@@ -107,7 +107,7 @@ let IndexLayout = (_dec = connect(({
     };
 
     return /*#__PURE__*/React.createElement(Fragment, null, /*#__PURE__*/React.createElement(Helmet, {
-      titleTemplate: `${title || 'Admin'} | %s`,
+      titleTemplate: `${title || "Admin"} | %s`,
       title: "Dashboard"
     }), BootstrappedLayout());
   }

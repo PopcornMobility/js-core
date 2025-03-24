@@ -1,5 +1,5 @@
 import store from 'store';
-import actions from "./actions";
+import actions from './actions';
 
 const STORED_SETTINGS = storedSettings => {
   const settings = {};

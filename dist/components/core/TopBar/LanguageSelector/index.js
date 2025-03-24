@@ -1,13 +1,9 @@
-import "antd/es/dropdown/style";
-import _Dropdown from "antd/es/dropdown";
-import "antd/es/menu/style";
-import _Menu from "antd/es/menu";
-
 var _dec, _class, _temp;
 
 import React from 'react';
+import { Menu, Dropdown } from 'antd';
 import { connect } from 'react-redux';
-import styles from "./style.module.scss";
+import styles from './style.module.scss';
 let LanguageSelector = (_dec = connect(({
   settings
 }) => ({
@@ -39,29 +35,29 @@ let LanguageSelector = (_dec = connect(({
       }
     } = this.props;
     const language = locale.substr(0, 2);
-    const langMenu = /*#__PURE__*/React.createElement(_Menu, {
+    const langMenu = /*#__PURE__*/React.createElement(Menu, {
       className: styles.menu,
       selectedKeys: [locale],
       onClick: this.changeLang
-    }, /*#__PURE__*/React.createElement(_Menu.Item, {
+    }, /*#__PURE__*/React.createElement(Menu.Item, {
       key: "en"
     }, /*#__PURE__*/React.createElement("span", {
       role: "img",
       "aria-label": "English",
       className: "mr-2"
-    }, "\uD83C\uDDEC\uD83C\uDDE7"), "English"), /*#__PURE__*/React.createElement(_Menu.Item, {
+    }, "\uD83C\uDDEC\uD83C\uDDE7"), "English"), /*#__PURE__*/React.createElement(Menu.Item, {
       key: "ro"
     }, /*#__PURE__*/React.createElement("span", {
       role: "img",
       "aria-label": "Romanian",
       className: "mr-2"
-    }, "\uD83C\uDDF7\uD83C\uDDF4"), "Rom\xE2n\u0103"), /*#__PURE__*/React.createElement(_Menu.Item, {
+    }, "\uD83C\uDDF7\uD83C\uDDF4"), "Rom\xE2n\u0103"), /*#__PURE__*/React.createElement(Menu.Item, {
       key: "uk"
     }, /*#__PURE__*/React.createElement("span", {
       role: "img",
       "aria-label": "Ukrainean",
       className: "mr-2"
-    }, "\uD83C\uDDFA\uD83C\uDDE6"), "\u0423\u043A\u0440\u0430\u0457\u043D\u0441\u044C\u043A\u0430"), /*#__PURE__*/React.createElement(_Menu.Item, {
+    }, "\uD83C\uDDFA\uD83C\uDDE6"), "\u0423\u043A\u0440\u0430\u0457\u043D\u0441\u044C\u043A\u0430"), /*#__PURE__*/React.createElement(Menu.Item, {
       key: "ru"
     }, /*#__PURE__*/React.createElement("span", {
       role: "img",
@@ -70,7 +66,7 @@ let LanguageSelector = (_dec = connect(({
     }, "\uD83C\uDDF7\uD83C\uDDFA"), "\u0420\u0443\u0441\u0441\u043A\u0438\u0439"));
     return /*#__PURE__*/React.createElement("div", {
       className: "mr-4"
-    }, /*#__PURE__*/React.createElement(_Dropdown, {
+    }, /*#__PURE__*/React.createElement(Dropdown, {
       overlay: langMenu,
       trigger: ['click']
     }, /*#__PURE__*/React.createElement("div", {

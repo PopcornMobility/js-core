@@ -1,7 +1,7 @@
 import { all, take, takeEvery, put } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import store from 'store';
-import actions from "./actions";
+import actions from './actions';
 
 function* isMobileView(load = false) {
   const currentState = window.innerWidth < 768;

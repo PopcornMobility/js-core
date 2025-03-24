@@ -1,12 +1,10 @@
-import "antd/es/layout/style";
-import _Layout from "antd/es/layout";
-
 var _dec, _class;
 
-import React from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import classNames from 'classnames';
+import React from "react";
+import { Layout } from "antd";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import classNames from "classnames";
 import TopBar from "../../components/core/TopBar";
 import Menu from "../../components/core/Menu";
 
@@ -31,7 +29,7 @@ let MainLayout = (_dec = connect(mapStateToProps), withRouter(_class = _dec(_cla
       isMenuTop,
       menu
     } = this.props;
-    return /*#__PURE__*/React.createElement(_Layout, {
+    return /*#__PURE__*/React.createElement(Layout, {
       className: classNames({
         settings__borderLess: isBorderless,
         settings__squaredBorders: isSquaredBorders,
@@ -41,14 +39,14 @@ let MainLayout = (_dec = connect(mapStateToProps), withRouter(_class = _dec(_cla
       })
     }, /*#__PURE__*/React.createElement(Menu, {
       menu: menu
-    }), /*#__PURE__*/React.createElement(_Layout, null, /*#__PURE__*/React.createElement(_Layout.Header, null, /*#__PURE__*/React.createElement(TopBar, null)), /*#__PURE__*/React.createElement(_Layout.Content, {
+    }), /*#__PURE__*/React.createElement(Layout, null, /*#__PURE__*/React.createElement(Layout.Header, null, /*#__PURE__*/React.createElement(TopBar, null)), /*#__PURE__*/React.createElement(Layout.Content, {
       style: {
-        height: '100%',
-        position: 'relative'
+        height: "100%",
+        position: "relative"
       }
     }, /*#__PURE__*/React.createElement("div", {
       className: "utils__content"
-    }, children)), /*#__PURE__*/React.createElement(_Layout.Footer, null)));
+    }, children)), /*#__PURE__*/React.createElement(Layout.Footer, null)));
   }
 
 }) || _class) || _class);

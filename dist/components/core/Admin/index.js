@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { logger } from 'redux-logger';
-import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
-import createSagaMiddleware from 'redux-saga';
-import { routerMiddleware } from 'connected-react-router';
-import { createStore, applyMiddleware, compose } from 'redux';
-import { createBrowserHistory } from 'history';
+import React, { Component } from "react";
+import { logger } from "redux-logger";
+import { Provider } from "react-redux";
+import thunk from "redux-thunk";
+import createSagaMiddleware from "redux-saga";
+import { routerMiddleware } from "connected-react-router";
+import { createStore, applyMiddleware, compose } from "redux";
+import { createBrowserHistory } from "history";
 import * as serviceWorker from "../../../serviceWorker";
 import Router from "../Router";
 import Localization from "../Localization";
@@ -22,7 +22,7 @@ const sagaMiddleware = createSagaMiddleware();
 const routeMiddleware = routerMiddleware(history);
 const middlewares = [IntlReduxMiddleware, thunk, sagaMiddleware, routeMiddleware]; // Redux Logger
 
-if (process.env.REACT_APP_REDUX_LOGGER === 'true') {
+if (process.env.REACT_APP_REDUX_LOGGER === "true") {
   middlewares.push(logger);
 }
 

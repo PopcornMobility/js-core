@@ -1,7 +1,6 @@
-import "antd/es/notification/style";
-import _notification from "antd/es/notification";
-import { all, takeEvery, put, select } from 'redux-saga/effects';
-import store from 'store';
+import { all, takeEvery, put, select } from "redux-saga/effects";
+import { notification } from "antd";
+import store from "store";
 import { login as apiLogin } from "../../services/api";
 import request from "../network/actions";
 import { checkAccess } from "../../utils/auth";
@@ -15,14 +14,14 @@ function login(url, extraParams) {
   }) {
     yield put(request(apiLogin(url, { ...payload,
       ...extraParams
-    }), 'auth'));
+    }), "auth"));
   };
 }
 
 function* LOGOUT() {
-  yield store.remove('app.user');
+  yield store.remove("app.user");
   yield put({
-    type: 'auth/reset'
+    type: "auth/reset"
   });
 }
 
@@ -35,11 +34,10 @@ function success(adminRoles) {
       yield LOGOUT();
     } else {
       // persist user data
-      yield store.set('app.user', user);
-
-      _notification.success({
-        message: 'Logged in',
-        description: 'You have successfully logged in!'
+      yield store.set("app.user", user);
+      notification.success({
+        message: "Logged in",
+        description: "You have successfully logged in!"
       });
     }
   };

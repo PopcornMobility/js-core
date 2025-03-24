@@ -1,46 +1,37 @@
-import "antd/es/popover/style";
-import _Popover from "antd/es/popover";
-import "antd/es/icon/style";
-import _Icon from "antd/es/icon";
-import "antd/es/tag/style";
-import _Tag from "antd/es/tag";
-import "antd/es/menu/style";
-import _Menu from "antd/es/menu";
-import "antd/es/layout/style";
-import _Layout from "antd/es/layout";
-
 var _dec, _class, _temp;
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-import React from 'react';
-import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
-import store from 'store';
-import { Scrollbars } from 'react-custom-scrollbars';
-import _ from 'lodash';
+import React from "react";
+import { connect } from "react-redux";
+import { Link, withRouter } from "react-router-dom";
+import { Menu, Layout, Tag, Popover } from "antd";
+import { LockOutlined } from "@ant-design/icons";
+import store from "store";
+import { Scrollbars } from "react-custom-scrollbars";
+import _ from "lodash";
 import { checkAccess } from "../../../../utils/auth";
 import styles from "./style.module.scss";
 const {
   Sider
-} = _Layout;
+} = Layout;
 const {
   SubMenu,
   Divider
-} = _Menu;
-const isDebug = process.env.REACT_APP_PERMISSIONS_DEBUG === 'true';
+} = Menu;
+const isDebug = process.env.REACT_APP_PERMISSIONS_DEBUG === "true";
 
 const DebugPopoverTitle = props => {
   const {
     isAuthorized
   } = props;
-  const color = isAuthorized ? 'green' : 'red';
+  const color = isAuthorized ? "green" : "red";
   return /*#__PURE__*/React.createElement("span", {
     style: {
       color,
-      fontWeight: 'bold'
+      fontWeight: "bold"
     }
-  }, isAuthorized ? 'Authorized' : 'Not authorized');
+  }, isAuthorized ? "Authorized" : "Not authorized");
 };
 
 const DebugPopoverContent = props => {
@@ -48,10 +39,10 @@ const DebugPopoverContent = props => {
     permissions,
     roles
   } = props;
-  return /*#__PURE__*/React.createElement(React.Fragment, null, roles && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("b", null, "Roles:"), ' ', roles.map(role => /*#__PURE__*/React.createElement(_Tag, {
+  return /*#__PURE__*/React.createElement(React.Fragment, null, roles && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("b", null, "Roles:"), " ", roles.map(role => /*#__PURE__*/React.createElement(Tag, {
     key: role,
     className: "mb-1"
-  }, role))), permissions && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("b", null, "Permissions:"), ' ', permissions.map(perm => /*#__PURE__*/React.createElement(_Tag, {
+  }, role))), permissions && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("b", null, "Permissions:"), " ", permissions.map(perm => /*#__PURE__*/React.createElement(Tag, {
     key: perm,
     className: "mb-1"
   }, perm))));
@@ -62,18 +53,17 @@ const DebugLock = props => {
     isAuthorized,
     ...rest
   } = props;
-  const color = isAuthorized ? 'green' : 'red';
+  const color = isAuthorized ? "green" : "red";
   const style = {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 5,
     padding: 2,
     color,
-    position: 'absolute',
+    position: "absolute",
     right: -40,
     top: 0
   };
-  return /*#__PURE__*/React.createElement(_Icon, _extends({}, rest, {
-    type: "lock",
+  return /*#__PURE__*/React.createElement(LockOutlined, _extends({}, rest, {
     style: style,
     className: "ml-2"
   }));
@@ -95,15 +85,15 @@ let MenuLeft = (_dec = connect(mapStateToProps), withRouter(_class = _dec(_class
   constructor(...args) {
     super(...args);
     this.state = {
-      selectedKeys: store.get('app.menu.selectedKeys') || [],
-      openedKeys: store.get('app.menu.openedKeys') || []
+      selectedKeys: store.get("app.menu.selectedKeys") || [],
+      openedKeys: store.get("app.menu.openedKeys") || []
     };
 
     this.clearOpenedKeys = () => {
       this.setState({
         openedKeys: []
       });
-      store.set('app.menu.openedKeys', []);
+      store.set("app.menu.openedKeys", []);
     };
 
     this.setSelectedKeys = () => {
@@ -122,7 +112,7 @@ let MenuLeft = (_dec = connect(mapStateToProps), withRouter(_class = _dec(_class
         return flattenedItems;
       }, []);
 
-      const selectedItem = _.find(flattenItems(menu, 'children'), ['url', location.pathname]);
+      const selectedItem = _.find(flattenItems(menu, "children"), ["url", location.pathname]);
 
       const {
         selectedKeys: [currentSelection]
@@ -141,14 +131,14 @@ let MenuLeft = (_dec = connect(mapStateToProps), withRouter(_class = _dec(_class
         isMenuCollapsed
       } = this.props;
 
-      if (type === 'responsive' && isMenuCollapsed) {
+      if (type === "responsive" && isMenuCollapsed) {
         return;
       }
 
       dispatch({
-        type: 'settings/CHANGE_SETTING',
+        type: "settings/CHANGE_SETTING",
         payload: {
-          setting: 'isMenuCollapsed',
+          setting: "isMenuCollapsed",
           value: !isMenuCollapsed
         }
       });
@@ -158,14 +148,14 @@ let MenuLeft = (_dec = connect(mapStateToProps), withRouter(_class = _dec(_class
     };
 
     this.onOpenChange = openedKeys => {
-      store.set('app.menu.openedKeys', openedKeys);
+      store.set("app.menu.openedKeys", openedKeys);
       this.setState({
         openedKeys
       });
     };
 
     this.handleClick = e => {
-      store.set('app.menu.selectedKeys', [e.key]);
+      store.set("app.menu.selectedKeys", [e.key]);
       this.setState({
         selectedKeys: [e.key]
       });
@@ -204,7 +194,7 @@ let MenuLeft = (_dec = connect(mapStateToProps), withRouter(_class = _dec(_class
         }
 
         const authorized = isAuthorized(roles, permissions);
-        const debugPopover = isDebug && /*#__PURE__*/React.createElement(_Popover, {
+        const debugPopover = isDebug && /*#__PURE__*/React.createElement(Popover, {
           title: /*#__PURE__*/React.createElement(DebugPopoverTitle, {
             isAuthorized: authorized
           }),
@@ -237,13 +227,13 @@ let MenuLeft = (_dec = connect(mapStateToProps), withRouter(_class = _dec(_class
           }, title, debugPopover), badge && /*#__PURE__*/React.createElement("span", {
             className: "badge badge-light badge-collapsed-hidden ml-2"
           }, badges[badge]));
-          return /*#__PURE__*/React.createElement(_Menu.Item, {
+          return /*#__PURE__*/React.createElement(Menu.Item, {
             key: key,
             disabled: disabled
           }, itemWithUrl);
         }
 
-        const normalItem = /*#__PURE__*/React.createElement(_Menu.Item, {
+        const normalItem = /*#__PURE__*/React.createElement(Menu.Item, {
           key: key,
           disabled: disabled
         }, icon && /*#__PURE__*/React.createElement("span", {
@@ -271,7 +261,7 @@ let MenuLeft = (_dec = connect(mapStateToProps), withRouter(_class = _dec(_class
           return null;
         }
 
-        const debugPopover = isDebug && /*#__PURE__*/React.createElement(_Popover, {
+        const debugPopover = isDebug && /*#__PURE__*/React.createElement(Popover, {
           title: /*#__PURE__*/React.createElement(DebugPopoverTitle, {
             isAuthorized: authorized
           }),
@@ -340,7 +330,7 @@ let MenuLeft = (_dec = connect(mapStateToProps), withRouter(_class = _dec(_class
       collapsible: true,
       collapsed: isMenuCollapsed,
       onCollapse: this.onCollapse,
-      breakpoint: 'lg'
+      breakpoint: "lg"
     };
     const menu = this.generateMenuItems();
     return /*#__PURE__*/React.createElement(Sider, _extends({}, menuSettings, {
@@ -350,7 +340,7 @@ let MenuLeft = (_dec = connect(mapStateToProps), withRouter(_class = _dec(_class
     }, /*#__PURE__*/React.createElement("div", {
       className: styles.logoContainer
     }, /*#__PURE__*/React.createElement("img", {
-      src: `/resources/images/logo${menuSettings.collapsed ? '-mobile' : ''}.png`,
+      src: `/resources/images/logo${menuSettings.collapsed ? "-mobile" : ""}.png`,
       alt: ""
     }))), /*#__PURE__*/React.createElement(Scrollbars, {
       className: isMobileView ? styles.scrollbarMobile : styles.scrollbarDesktop,
@@ -359,15 +349,15 @@ let MenuLeft = (_dec = connect(mapStateToProps), withRouter(_class = _dec(_class
         ...props
       }) => /*#__PURE__*/React.createElement("div", _extends({}, props, {
         style: { ...style,
-          width: '4px',
-          borderRadius: 'inherit',
-          backgroundColor: '#c5cdd2',
-          left: '1px'
+          width: "4px",
+          borderRadius: "inherit",
+          backgroundColor: "#c5cdd2",
+          left: "1px"
         }
       })),
       autoHide: true
-    }, /*#__PURE__*/React.createElement(_Menu, {
-      theme: isLightTheme ? 'light' : 'dark',
+    }, /*#__PURE__*/React.createElement(Menu, {
+      theme: isLightTheme ? "light" : "dark",
       onClick: this.handleClick,
       selectedKeys: selectedKeys,
       openKeys: openedKeys,

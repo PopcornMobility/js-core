@@ -42,9 +42,9 @@ export default ((config = {}) => {
     ...config
   };
   return {
-    name: 'core',
+    name: "core",
     routes: [...(config.overrideUi !== true ? [{
-      path: '/auth/login',
+      path: "/auth/login",
       component: Loadable(() => import("../../pages/auth/login")),
       exact: true
     }] : [])],

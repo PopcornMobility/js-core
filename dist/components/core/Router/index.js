@@ -3,10 +3,10 @@ var _class;
 /* eslint react/no-multi-comp: 0 */
 
 /* eslint camelcase: 0 */
-import React from 'react';
-import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
-import { ConnectedRouter } from 'connected-react-router';
-import ReactLoadable from 'react-loadable';
+import React from "react";
+import { Route, Switch, Redirect, withRouter } from "react-router-dom";
+import { ConnectedRouter } from "connected-react-router";
+import ReactLoadable from "react-loadable";
 import Loader from "../Loader";
 import IndexLayout from "../../../layouts";
 import NotFoundPage from "../../../pages/404";
@@ -39,7 +39,7 @@ let ModalSwitch = withRouter(_class = class ModalSwitch extends React.Component 
       history
     } = nextProps;
 
-    if (history.action !== 'POP' && (!location.state || !location.state.modal)) {
+    if (history.action !== "POP" && (!location.state || !location.state.modal)) {
       this.previousLocation = location;
     }
   }

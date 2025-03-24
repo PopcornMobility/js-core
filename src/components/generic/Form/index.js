@@ -16,7 +16,7 @@ import {
 import moment from "moment";
 import _ from "lodash";
 
-import QRScanner from "../QRScanner";
+// import QRScanner from "../QRScanner";
 import countries from "./countries.json";
 import "./style.css";
 import RemoteSelect from "./remoteSelect";
@@ -81,25 +81,25 @@ class Form extends React.Component {
     }
   };
 
-  getQRScanner = field => {
-    const {
-      form: { setFieldsValue }
-    } = this.props;
-
-    const handleScan = data => {
-      if (data) {
-        setFieldsValue({
-          [field]: data
-        });
-        // manually trigger on change after scan
-        this.handleOnChange(field);
-      }
-    };
-
-    return (
-      <QRScanner className="ant-input-search-button" onScan={handleScan} />
-    );
-  };
+  // getQRScanner = field => {
+  //   const {
+  //     form: { setFieldsValue }
+  //   } = this.props;
+  //
+  //   const handleScan = data => {
+  //     if (data) {
+  //       setFieldsValue({
+  //         [field]: data
+  //       });
+  //       // manually trigger on change after scan
+  //       this.handleOnChange(field);
+  //     }
+  //   };
+  //
+  //   return (
+  //     <QRScanner className="ant-input-search-button" onScan={handleScan} />
+  //   );
+  // };
 
   getSelectItem = itemConfig => {
     const { field, type, placeholder, options, disabled, ...rest } = itemConfig;
@@ -221,17 +221,6 @@ class Form extends React.Component {
             {...rest}
           />
         );
-      case "qrcode":
-        return (
-          <Input
-            placeholder={placeholder}
-            disabled={disabled}
-            addonAfter={this.getQRScanner(field)}
-            className="ant-input-search-enter-button"
-            onChange={() => this.handleOnChange(field)}
-            {...rest}
-          />
-        );
       case "textarea":
         return (
           <Input.TextArea
@@ -308,7 +297,7 @@ class Form extends React.Component {
       field,
       label,
       type,
-      rules,
+      // rules,
       items,
       render,
       layout: itemLayout
@@ -332,7 +321,7 @@ class Form extends React.Component {
     }
 
     // adjust value prop name, depending on input type
-    const extraProps = this.getExtraProps(type);
+    // const extraProps = this.getExtraProps(type);
 
     // set field errors, if any
     if (errors && errors[field]) {
@@ -365,7 +354,7 @@ class Form extends React.Component {
       }
     }
 
-    const fieldDecoratorOptions = { rules, initialValue, ...extraProps };
+    // const fieldDecoratorOptions = { rules, initialValue, ...extraProps };
 
     return (
       <Col key={field} {...layout}>
@@ -374,13 +363,9 @@ class Form extends React.Component {
           {...props}
           className={isSubItem ? "mb-0" : null}
         >
-          {!items &&
-            form.getFieldDecorator(
-              field,
-              fieldDecoratorOptions
-            )(this.getItem(itemConfig))}
-          {items &&
-            items.map(subItemConfig => this.getFormItem(subItemConfig, true))}
+          {!items
+            ? this.getItem(itemConfig)
+            : items.map(subItemConfig => this.getFormItem(subItemConfig, true))}
         </AntForm.Item>
       </Col>
     );

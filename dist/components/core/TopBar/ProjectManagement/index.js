@@ -1,34 +1,31 @@
-import "antd/es/dropdown/style";
-import _Dropdown from "antd/es/dropdown";
-import "antd/es/menu/style";
-import _Menu from "antd/es/menu";
 import React from 'react';
+import { Menu, Dropdown } from 'antd';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
-import styles from "./style.module.scss";
+import styles from './style.module.scss';
 
 class ProjectManagement extends React.Component {
   render() {
-    const menu = /*#__PURE__*/React.createElement(_Menu, {
+    const menu = /*#__PURE__*/React.createElement(Menu, {
       selectable: false
-    }, /*#__PURE__*/React.createElement(_Menu.ItemGroup, {
+    }, /*#__PURE__*/React.createElement(Menu.ItemGroup, {
       title: "Active"
-    }, /*#__PURE__*/React.createElement(_Menu.Item, null, /*#__PURE__*/React.createElement(Link, {
+    }, /*#__PURE__*/React.createElement(Menu.Item, null, /*#__PURE__*/React.createElement(Link, {
       to: "/"
-    }, "Project Management")), /*#__PURE__*/React.createElement(_Menu.Item, null, /*#__PURE__*/React.createElement(Link, {
+    }, "Project Management")), /*#__PURE__*/React.createElement(Menu.Item, null, /*#__PURE__*/React.createElement(Link, {
       to: "/"
-    }, "User Interface Development")), /*#__PURE__*/React.createElement(_Menu.Item, null, /*#__PURE__*/React.createElement(Link, {
+    }, "User Interface Development")), /*#__PURE__*/React.createElement(Menu.Item, null, /*#__PURE__*/React.createElement(Link, {
       to: "/"
-    }, "Documentation"))), /*#__PURE__*/React.createElement(_Menu.ItemGroup, {
+    }, "Documentation"))), /*#__PURE__*/React.createElement(Menu.ItemGroup, {
       title: "Inactive"
-    }, /*#__PURE__*/React.createElement(_Menu.Item, null, /*#__PURE__*/React.createElement(Link, {
+    }, /*#__PURE__*/React.createElement(Menu.Item, null, /*#__PURE__*/React.createElement(Link, {
       to: "/"
-    }, "Marketing"))), /*#__PURE__*/React.createElement(_Menu.Divider, null), /*#__PURE__*/React.createElement(_Menu.Item, null, /*#__PURE__*/React.createElement(Link, {
+    }, "Marketing"))), /*#__PURE__*/React.createElement(Menu.Divider, null), /*#__PURE__*/React.createElement(Menu.Item, null, /*#__PURE__*/React.createElement(Link, {
       to: "/"
     }, /*#__PURE__*/React.createElement("i", {
       className: `${styles.menuIcon} icmn-cog`
     }), " Settings")));
-    return /*#__PURE__*/React.createElement(_Dropdown, {
+    return /*#__PURE__*/React.createElement(Dropdown, {
       overlay: menu,
       trigger: ['click'],
       placement: "bottomLeft"

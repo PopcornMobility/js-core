@@ -1,27 +1,14 @@
-import "antd/es/table/style";
-import _Table from "antd/es/table";
-import "antd/es/row/style";
-import _Row from "antd/es/row";
-import "antd/es/tooltip/style";
-import _Tooltip from "antd/es/tooltip";
-import "antd/es/button/style";
-import _Button from "antd/es/button";
-import "antd/es/col/style";
-import _Col from "antd/es/col";
-import "antd/es/input/style";
-import _Input from "antd/es/input";
-import "antd/es/icon/style";
-import _Icon from "antd/es/icon";
-
 var _dec, _class, _temp;
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-import React from 'react';
-import _ from 'lodash';
-import { connect } from 'react-redux';
-import download from 'downloadjs';
-import { injectIntl } from 'react-intl';
+import React from "react";
+import { Table, Input, Row, Col, Button, Tooltip } from "antd";
+import { FilterOutlined } from "@ant-design/icons";
+import _ from "lodash";
+import { connect } from "react-redux";
+import download from "downloadjs";
+import { injectIntl } from "react-intl";
 import net from "../../../utils/net";
 import RemoteFilter from "./remoteFilter";
 import ColumnSelector from "./columnSelector";
@@ -36,7 +23,7 @@ let DataTable = (_dec = connect(({
     super(...args);
     this.state = {
       params: {
-        search: '',
+        search: "",
         page: 1,
         limit: 25 // default page size
 
@@ -60,7 +47,7 @@ let DataTable = (_dec = connect(({
         params = { ...params,
           sorter: {
             field: col.dataIndex,
-            order: col.defaultSortOrder === 'ascend' ? 'ASC' : 'DESC'
+            order: col.defaultSortOrder === "ascend" ? "ASC" : "DESC"
           }
         };
       } // if filters have been set as a prop, merge with the ones from state
@@ -135,7 +122,7 @@ let DataTable = (_dec = connect(({
         params = { ...params,
           sorter: {
             field: sorter.field,
-            order: sorter.order === 'ascend' ? 'ASC' : 'DESC'
+            order: sorter.order === "ascend" ? "ASC" : "DESC"
           }
         };
       } // persist the final object so we can use it when searching
@@ -180,7 +167,7 @@ let DataTable = (_dec = connect(({
       const params = {
         limit,
         page: 1,
-        search: ''
+        search: ""
       };
       this.setState({
         params
@@ -217,8 +204,8 @@ let DataTable = (_dec = connect(({
       const {
         exportConfig: {
           apiFn,
-          filename = 'export.xlsx',
-          mimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          filename = "export.xlsx",
+          mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         }
       } = this.props;
       const {
@@ -238,7 +225,7 @@ let DataTable = (_dec = connect(({
         style: config.styleColumn ? { ...config.styleColumn
         } : {
           padding: 8,
-          width: '200px'
+          width: "200px"
         }
       }, /*#__PURE__*/React.createElement(RemoteFilter, {
         remoteSearch: config,
@@ -247,11 +234,9 @@ let DataTable = (_dec = connect(({
           confirm
         }
       })),
-      filterIcon: filtered => /*#__PURE__*/React.createElement(_Icon, {
-        type: "filter",
-        theme: "filled",
+      filterIcon: filtered => /*#__PURE__*/React.createElement(FilterOutlined, {
         style: {
-          color: filtered ? '#1890ff' : undefined
+          color: filtered ? "#1890ff" : undefined
         }
       })
     });
@@ -393,64 +378,64 @@ let DataTable = (_dec = connect(({
       ...rest
     } = this.props;
     const [columnsForColumnSelector, columnsForTable] = this.processColumns(columns);
-    const extra = /*#__PURE__*/React.createElement(_Row, {
+    const extra = /*#__PURE__*/React.createElement(Row, {
       type: "flex",
       justify: "space-between"
-    }, _.isUndefined(customSearch) && /*#__PURE__*/React.createElement(_Col, {
+    }, _.isUndefined(customSearch) && /*#__PURE__*/React.createElement(Col, {
       cs: 24,
       sm: 8
-    }, /*#__PURE__*/React.createElement(_Input.Search, {
+    }, /*#__PURE__*/React.createElement(Input.Search, {
       className: "mb-4",
       placeholder: intl.formatMessage({
-        id: 'datatable.search'
+        id: "datatable.search"
       }),
       onSearch: this.handleSearch,
       value: search,
       onChange: this.handleSearchInputChange
-    })), !_.isUndefined(customSearch) && /*#__PURE__*/React.createElement(_Col, null, /*#__PURE__*/React.createElement("div", {
+    })), !_.isUndefined(customSearch) && /*#__PURE__*/React.createElement(Col, null, /*#__PURE__*/React.createElement("div", {
       className: "mb-4",
       style: {
-        display: 'inline-flex'
+        display: "inline-flex"
       }
-    }, customSearch)), /*#__PURE__*/React.createElement(_Col, null, /*#__PURE__*/React.createElement("div", {
+    }, customSearch)), /*#__PURE__*/React.createElement(Col, null, /*#__PURE__*/React.createElement("div", {
       className: "mb-4",
       style: {
-        display: 'inline-flex'
+        display: "inline-flex"
       }
-    }, /*#__PURE__*/React.createElement(_Button.Group, null, /*#__PURE__*/React.createElement(_Tooltip, {
+    }, /*#__PURE__*/React.createElement(Button.Group, null, /*#__PURE__*/React.createElement(Tooltip, {
       placement: "top",
       title: intl.formatMessage({
-        id: 'datatable.tooltips.clear'
+        id: "datatable.tooltips.clear"
       })
-    }, /*#__PURE__*/React.createElement(_Button, {
+    }, /*#__PURE__*/React.createElement(Button, {
       icon: "stop",
       onClick: this.handleClearFilters
-    })), /*#__PURE__*/React.createElement(_Tooltip, {
+    })), /*#__PURE__*/React.createElement(Tooltip, {
       placement: "top",
       title: intl.formatMessage({
-        id: 'datatable.tooltips.refresh'
+        id: "datatable.tooltips.refresh"
       })
-    }, /*#__PURE__*/React.createElement(_Button, {
+    }, /*#__PURE__*/React.createElement(Button, {
       icon: "reload",
       onClick: this.handleRefresh
     }, intl.formatMessage({
-      id: 'datatable.actions.refresh'
+      id: "datatable.actions.refresh"
     })))), showColumnSelector && /*#__PURE__*/React.createElement(ColumnSelector, {
       onColumnSelectionChanged: this.onColumnSelectionChanged,
       className: "ml-2",
       columns: columnsForColumnSelector,
       settingsKey: settingsKey
-    }), exportConfig && /*#__PURE__*/React.createElement(_Tooltip, {
+    }), exportConfig && /*#__PURE__*/React.createElement(Tooltip, {
       placement: "top",
       title: intl.formatMessage({
-        id: 'datatable.tooltips.export'
+        id: "datatable.tooltips.export"
       })
-    }, /*#__PURE__*/React.createElement(_Button, {
+    }, /*#__PURE__*/React.createElement(Button, {
       className: "ml-2",
       icon: "download",
       onClick: this.handleExportClick
     })), actions)));
-    return /*#__PURE__*/React.createElement("div", null, extra, /*#__PURE__*/React.createElement(_Table, _extends({
+    return /*#__PURE__*/React.createElement("div", null, extra, /*#__PURE__*/React.createElement(Table, _extends({
       key: columns.length,
       rowKey: "id",
       className: "utils__scrollTable",
@@ -464,7 +449,7 @@ let DataTable = (_dec = connect(({
         current: page,
         defaultPageSize: limit,
         showSizeChanger: true,
-        pageSizeOptions: ['10', '25', '50', '100', '200'],
+        pageSizeOptions: ["10", "25", "50", "100", "200"],
         total: pagination && pagination.total
       },
       onRow: (record, rowIndex) => {

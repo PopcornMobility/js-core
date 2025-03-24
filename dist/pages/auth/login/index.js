@@ -1,21 +1,16 @@
-import "antd/es/button/style";
-import _Button from "antd/es/button";
-import "antd/es/input/style";
-import _Input from "antd/es/input";
-import "antd/es/form/style";
-import _Form from "antd/es/form";
+var _dec, _class, _temp;
 
-var _dec, _dec2, _class, _temp;
+import React, { Component } from "react";
+import { Form, Input, Button } from "antd";
+import { Helmet } from "react-helmet";
+import { connect } from "react-redux";
+import styles from "./style.module.scss"; // @Form.create()
 
-import React, { Component } from 'react';
-import { Helmet } from 'react-helmet';
-import { connect } from 'react-redux';
-import styles from "./style.module.scss";
-let Login = (_dec = _Form.create(), _dec2 = connect(({
+let Login = (_dec = connect(({
   user
 }) => ({
   user
-})), _dec(_class = _dec2(_class = (_temp = class Login extends Component {
+})), _dec(_class = (_temp = class Login extends Component {
   constructor(...args) {
     super(...args);
 
@@ -28,7 +23,7 @@ let Login = (_dec = _Form.create(), _dec2 = connect(({
       form.validateFields((error, values) => {
         if (!error) {
           dispatch({
-            type: 'user/LOGIN',
+            type: "user/LOGIN",
             payload: values
           });
         }
@@ -38,7 +33,6 @@ let Login = (_dec = _Form.create(), _dec2 = connect(({
 
   render() {
     const {
-      form,
       user: {
         loading
       }
@@ -59,30 +53,30 @@ let Login = (_dec = _Form.create(), _dec2 = connect(({
       className: styles.form
     }, /*#__PURE__*/React.createElement("h4", {
       className: "text-uppercase"
-    }, /*#__PURE__*/React.createElement("strong", null, "Log in")), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement(_Form, {
+    }, /*#__PURE__*/React.createElement("strong", null, "Log in")), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement(Form, {
       layout: "vertical",
       hideRequiredMark: true,
       onSubmit: this.onSubmit
-    }, /*#__PURE__*/React.createElement(_Form.Item, {
-      label: "Email"
-    }, form.getFieldDecorator('email', {
+    }, /*#__PURE__*/React.createElement(Form.Item, {
+      label: "Email",
+      name: "email",
       rules: [{
         required: true,
-        message: 'Please input your e-mail address'
+        message: "Please input your e-mail address"
       }]
-    })( /*#__PURE__*/React.createElement(_Input, {
+    }, /*#__PURE__*/React.createElement(Input, {
       size: "default"
-    }))), /*#__PURE__*/React.createElement(_Form.Item, {
-      label: "Password"
-    }, form.getFieldDecorator('password', {
+    })), /*#__PURE__*/React.createElement(Form.Item, {
+      label: "Password",
+      name: "password",
       rules: [{
         required: true,
-        message: 'Please input your password'
+        message: "Please input your password"
       }]
-    })( /*#__PURE__*/React.createElement(_Input, {
+    }, /*#__PURE__*/React.createElement(Input.Password, {
       size: "default",
       type: "password"
-    }))), /*#__PURE__*/React.createElement(_Button, {
+    })), /*#__PURE__*/React.createElement(Button, {
       type: "primary",
       className: "width-150 mr-4",
       htmlType: "submit",
@@ -90,5 +84,5 @@ let Login = (_dec = _Form.create(), _dec2 = connect(({
     }, "Login"))))))));
   }
 
-}, _temp)) || _class) || _class);
+}, _temp)) || _class);
 export default Login;

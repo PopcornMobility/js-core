@@ -1,17 +1,13 @@
-import "antd/es/spin/style";
-import _Spin from "antd/es/spin";
-import "antd/es/select/style";
-import _Select from "antd/es/select";
-
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 import React from 'react';
+import { Select, Spin } from 'antd';
 import debounce from 'lodash/debounce';
 import isObject from 'lodash/isObject';
 import isEqual from 'lodash/isEqual';
 const {
   Option
-} = _Select;
+} = Select;
 /* Props explaining:
 
 remoteSearch: {
@@ -143,14 +139,14 @@ class RemoteSelect extends React.Component {
     } = this.props;
     const dataFiltered = data.filter(x => !preOptions.some(y => y.value === x.value));
     const newData = dataFiltered.concat(preOptions);
-    return /*#__PURE__*/React.createElement(_Select, _extends({}, restRS, restProps, {
+    return /*#__PURE__*/React.createElement(Select, _extends({}, restRS, restProps, {
       disabled: disabled,
       showSearch: true,
       allowClear: true,
       onSearch: this.fetchData,
       onFocus: () => this.fetchData(' '),
       onChange: this.handleChange,
-      notFoundContent: fetching ? /*#__PURE__*/React.createElement(_Spin, {
+      notFoundContent: fetching ? /*#__PURE__*/React.createElement(Spin, {
         size: "small"
       }) : null
     }), newData.map(d => {

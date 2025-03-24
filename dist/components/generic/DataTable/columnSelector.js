@@ -1,18 +1,10 @@
-import "antd/es/popover/style";
-import _Popover from "antd/es/popover";
-import "antd/es/tooltip/style";
-import _Tooltip from "antd/es/tooltip";
-import "antd/es/button/style";
-import _Button from "antd/es/button";
-import "antd/es/switch/style";
-import _Switch from "antd/es/switch";
-
 var _class, _temp;
 
-import React from 'react';
-import isObject from 'lodash/isObject';
-import store from 'store';
-import { injectIntl } from 'react-intl';
+import React from "react";
+import { Switch, Button, Popover, Tooltip } from "antd";
+import isObject from "lodash/isObject";
+import store from "store";
+import { injectIntl } from "react-intl";
 
 let ColumnSelector = injectIntl(_class = (_temp = class ColumnSelector extends React.Component {
   constructor(...args) {
@@ -97,22 +89,22 @@ let ColumnSelector = injectIntl(_class = (_temp = class ColumnSelector extends R
       return /*#__PURE__*/React.createElement("div", {
         key: keyOrDataIndex,
         className: "mb-2"
-      }, /*#__PURE__*/React.createElement(_Switch, {
+      }, /*#__PURE__*/React.createElement(Switch, {
         className: "mr-3",
         checked: !el.hidden,
         onChange: (checked, event) => this.handleOnChange(checked, event, keyOrDataIndex)
       }), el.title);
-    }) : 'No columns selected');
-    return /*#__PURE__*/React.createElement(_Popover, {
+    }) : "No columns selected");
+    return /*#__PURE__*/React.createElement(Popover, {
       placement: "bottomRight",
       trigger: "click",
       content: settings
-    }, /*#__PURE__*/React.createElement(_Tooltip, {
+    }, /*#__PURE__*/React.createElement(Tooltip, {
       placement: "top",
       title: intl.formatMessage({
-        id: 'datatable.tooltips.columns'
+        id: "datatable.tooltips.columns"
       })
-    }, /*#__PURE__*/React.createElement(_Button, {
+    }, /*#__PURE__*/React.createElement(Button, {
       className: className,
       icon: "table"
     })));
@@ -120,4 +112,4 @@ let ColumnSelector = injectIntl(_class = (_temp = class ColumnSelector extends R
 
 }, _temp)) || _class;
 
-export { ColumnSelector as default };
+export default ColumnSelector;

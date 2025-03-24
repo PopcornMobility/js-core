@@ -1,9 +1,7 @@
-import "antd/es/button/style";
-import _Button from "antd/es/button";
-
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 import React from 'react';
+import { Button } from 'antd';
 import { Map, Marker, TileLayer, Popup, Polyline } from 'react-leaflet';
 import AntPath from 'react-leaflet-ant-path'; // import L from 'leaflet'
 
@@ -41,9 +39,9 @@ export default class LeafletMap extends React.Component {
       url: "https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiY2l0eWxpbmsiLCJhIjoiY2p1bWFlOTMzMHNiMTQzcHcwOWd3ajdkdyJ9.3S-mnIR0lvcsWq4elpk-TA"
     }), position && /*#__PURE__*/React.createElement(Marker, {
       position: position
-    }, /*#__PURE__*/React.createElement(Popup, null, /*#__PURE__*/React.createElement(_Button, {
+    }, /*#__PURE__*/React.createElement(Popup, null, /*#__PURE__*/React.createElement(Button, {
       href: gmapUrl
-    }, "GMaps"), /*#__PURE__*/React.createElement(_Button, {
+    }, "GMaps"), /*#__PURE__*/React.createElement(Button, {
       href: wazeUrl,
       className: "ml-1"
     }, "Waze"))), polyline && !useAntPath && /*#__PURE__*/React.createElement(Polyline, {

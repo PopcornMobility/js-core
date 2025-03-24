@@ -1,10 +1,8 @@
-import "antd/es/layout/style";
-import _Layout from "antd/es/layout";
-
 var _class;
 
-import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import React from "react";
+import { Layout } from "antd";
+import { Link, withRouter } from "react-router-dom";
 import LanguageSelector from "../../components/core/TopBar/LanguageSelector";
 import styles from "./style.module.scss";
 
@@ -13,7 +11,7 @@ let LoginLayout = withRouter(_class = class LoginLayout extends React.PureCompon
     const {
       children
     } = this.props;
-    return /*#__PURE__*/React.createElement(_Layout, null, /*#__PURE__*/React.createElement(_Layout.Content, null, /*#__PURE__*/React.createElement("div", {
+    return /*#__PURE__*/React.createElement(Layout, null, /*#__PURE__*/React.createElement(Layout.Content, null, /*#__PURE__*/React.createElement("div", {
       className: styles.layout
     }, /*#__PURE__*/React.createElement("div", {
       className: styles.header

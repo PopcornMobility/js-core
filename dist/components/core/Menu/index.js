@@ -5,8 +5,8 @@ import React from 'react';
 import DrawerMenu from 'rc-drawer';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import MenuLeft from "./MenuLeft";
-import MenuTop from "./MenuTop";
+import MenuLeft from './MenuLeft';
+import MenuTop from './MenuTop';
 
 const mapStateToProps = ({
   settings

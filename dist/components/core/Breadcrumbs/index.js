@@ -4,7 +4,7 @@ import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { reduce } from 'lodash';
-import styles from "./style.module.scss";
+import styles from './style.module.scss';
 
 const mapStateToProps = ({
   menu

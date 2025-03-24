@@ -1,8 +1,5 @@
-import "antd/es/popover/style";
-import _Popover from "antd/es/popover";
-import "antd/es/button/style";
-import _Button from "antd/es/button";
 import React from 'react';
+import { Button, Popover } from 'antd';
 import QrReader from 'react-qr-reader';
 export default class QRScanner extends React.Component {
   constructor(...args) {
@@ -59,7 +56,7 @@ export default class QRScanner extends React.Component {
       },
       showViewFinder: true
     });
-    const scanButton = /*#__PURE__*/React.createElement(_Popover, {
+    const scanButton = /*#__PURE__*/React.createElement(Popover, {
       visible: scanEnabled,
       onVisibleChange: visible => this.setState({
         scanEnabled: visible
@@ -67,7 +64,7 @@ export default class QRScanner extends React.Component {
       placement: "bottomRight",
       content: /*#__PURE__*/React.createElement("div", null, extra, scanView),
       trigger: "click"
-    }, /*#__PURE__*/React.createElement(_Button, {
+    }, /*#__PURE__*/React.createElement(Button, {
       icon: "qrcode",
       className: className,
       size: buttonSize,

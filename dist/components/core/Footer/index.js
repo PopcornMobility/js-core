@@ -1,7 +1,6 @@
-import "antd/es/button/style";
-import _Button from "antd/es/button";
 import React from 'react';
-import styles from "./style.module.scss";
+import { Button } from 'antd';
+import styles from './style.module.scss';
 
 const Footer = () => /*#__PURE__*/React.createElement("div", {
   className: styles.footer
@@ -22,7 +21,7 @@ const Footer = () => /*#__PURE__*/React.createElement("div", {
   target: "_blank",
   rel: "noopener noreferrer",
   className: "mr-4"
-}, /*#__PURE__*/React.createElement(_Button, {
+}, /*#__PURE__*/React.createElement(Button, {
   type: "danger"
 }, "Buy Now 24$"))), /*#__PURE__*/React.createElement("div", {
   className: "col-sm-6"

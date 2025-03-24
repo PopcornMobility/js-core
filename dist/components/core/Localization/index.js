@@ -1,18 +1,17 @@
-import "antd/es/config-provider/style";
-import _ConfigProvider from "antd/es/config-provider";
-import * as React from 'react';
-import { RawIntlProvider } from 'react-intl';
-import { connect } from 'react-redux';
+import * as React from "react";
+import { ConfigProvider } from "antd";
+import { RawIntlProvider } from "react-intl";
+import { connect } from "react-redux";
 import english from "../../../locales/en";
-import romanian from "../../../locales/ro";
-import ukrainean from "../../../locales/uk";
-import russian from "../../../locales/ru";
+import romanian from "../../../locales/ro"; // import ukrainean from '../../../locales/uk'
+// import russian from '../../../locales/ru'
+
 import { IntlSetup } from "./intlSetup";
 const defaultLocale = {
   en: english,
-  ro: romanian,
-  uk: ukrainean,
-  ru: russian
+  ro: romanian // uk: ukrainean,
+  // ru: russian,
+
 };
 
 const mapStateToProps = ({
@@ -49,7 +48,7 @@ const Localization = props => {
     locale: lang,
     messages: AppLocale
   });
-  return /*#__PURE__*/React.createElement(_ConfigProvider, {
+  return /*#__PURE__*/React.createElement(ConfigProvider, {
     locale: CoreLocale.antdData
   }, /*#__PURE__*/React.createElement(RawIntlProvider, {
     value: intl

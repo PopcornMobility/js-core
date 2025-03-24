@@ -1,12 +1,11 @@
-import "antd/es/notification/style";
-import _notification from "antd/es/notification";
-import { all, takeEvery, put, call, race, delay } from 'redux-saga/effects';
-import _ from 'lodash';
+import { all, takeEvery, put, call, race, delay } from "redux-saga/effects";
+import { notification } from "antd";
+import _ from "lodash";
 import { api } from "../../utils/net";
 import actions from "../user/actions";
 
-function showErrorNotification(content, title = 'Oops') {
-  let description = 'Something went wrong, please retry.';
+function showErrorNotification(content, title = "Oops") {
+  let description = "Something went wrong, please retry.";
 
   if (_.isObject(content)) {
     const {
@@ -27,7 +26,7 @@ function showErrorNotification(content, title = 'Oops') {
     description = content;
   }
 
-  _notification.error({
+  notification.error({
     message: title,
     description
   });
@@ -59,11 +58,10 @@ function request(loginUrl) {
       }); // handle timeouts
 
       if (timeout) {
-        _notification.warning({
-          message: 'Slow connection',
-          description: 'Request timed out. Please retry.'
+        notification.warning({
+          message: "Slow connection",
+          description: "Request timed out. Please retry."
         });
-
         yield put({
           type: `${action}/error`
         });
@@ -95,7 +93,7 @@ function request(loginUrl) {
             break;
           }
 
-          console.log('401'); // user not authorized, redirect to login
+          console.log("401"); // user not authorized, redirect to login
 
           yield put({
             type: actions.LOGOUT
@@ -103,7 +101,7 @@ function request(loginUrl) {
           break;
 
         case 429:
-          showErrorNotification('Too many attempts.');
+          showErrorNotification("Too many attempts.");
           break;
 
         default:
@@ -111,8 +109,8 @@ function request(loginUrl) {
           break;
       }
     } catch (e) {
-      if (e.message === 'Failed to fetch') {
-        showErrorNotification('Check your internet connection.', 'Offline');
+      if (e.message === "Failed to fetch") {
+        showErrorNotification("Check your internet connection.", "Offline");
       } else {
         showErrorNotification();
       } // console.log(e)
@@ -129,5 +127,5 @@ export default function* rootSaga(config) {
   const {
     url
   } = config;
-  yield all([takeEvery('network/request', request(url))]);
+  yield all([takeEvery("network/request", request(url))]);
 }
