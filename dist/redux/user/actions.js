@@ -1,8 +1,8 @@
-import { networkActions } from "../network/actions";
+import { networkActionsCreator } from "../actions_creator";
 const actions = {
   LOGIN: "user/LOGIN",
   LOGOUT: "user/LOGOUT",
-  ...networkActions("auth"),
+  ...networkActionsCreator("auth"),
   SET_SYSTEM_ROLES: "auth/roles/system/set",
   SET_DYNAMIC_ROLES: "auth/roles/dynamic/set",
   SET_SYSTEM_PERMISSIONS: "auth/permissions/system/set",

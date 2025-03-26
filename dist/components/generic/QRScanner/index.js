@@ -1,6 +1,6 @@
-import React from 'react';
-import { Button, Popover } from 'antd';
-import QrReader from 'react-qr-reader';
+import React from "react";
+import { Button, Popover } from "antd";
+import QrReader from "react-qr-reader";
 export default class QRScanner extends React.Component {
   constructor(...args) {
     super(...args);
@@ -19,10 +19,10 @@ export default class QRScanner extends React.Component {
           this.setState({
             scanEnabled: false
           });
-        } // check if data contains a citylink specific url
+        } // check if data contains a popride specific url
 
 
-        const regex = /(.*)citylink.ro\/ref\/(.*)/;
+        const regex = /(.*)popride.ro\/ref\/(.*)/;
         const match = data.match(regex);
         const ref = match && match[2];
 
@@ -71,7 +71,7 @@ export default class QRScanner extends React.Component {
       block: buttonBlock,
       type: buttonType,
       style: style
-    }, buttonText || 'Scan'));
+    }, buttonText || "Scan"));
     return scanButton;
   }
 

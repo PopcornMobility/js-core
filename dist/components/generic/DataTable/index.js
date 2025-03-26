@@ -4,7 +4,7 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 import React from "react";
 import { Table, Input, Row, Col, Button, Tooltip } from "antd";
-import { FilterOutlined } from "@ant-design/icons";
+import { FilterOutlined, StopOutlined, ReloadOutlined } from "@ant-design/icons";
 import _ from "lodash";
 import { connect } from "react-redux";
 import download from "downloadjs";
@@ -408,7 +408,7 @@ let DataTable = (_dec = connect(({
         id: "datatable.tooltips.clear"
       })
     }, /*#__PURE__*/React.createElement(Button, {
-      icon: "stop",
+      icon: /*#__PURE__*/React.createElement(StopOutlined, null),
       onClick: this.handleClearFilters
     })), /*#__PURE__*/React.createElement(Tooltip, {
       placement: "top",
@@ -416,7 +416,7 @@ let DataTable = (_dec = connect(({
         id: "datatable.tooltips.refresh"
       })
     }, /*#__PURE__*/React.createElement(Button, {
-      icon: "reload",
+      icon: /*#__PURE__*/React.createElement(ReloadOutlined, null),
       onClick: this.handleRefresh
     }, intl.formatMessage({
       id: "datatable.actions.refresh"

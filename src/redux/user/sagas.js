@@ -3,7 +3,7 @@ import { notification } from "antd";
 import store from "store";
 
 import { login as apiLogin } from "../../services/api";
-import request from "../network/actions";
+import { request } from "../network/actions";
 import { checkAccess } from "../../utils/auth";
 
 import actions from "./actions";

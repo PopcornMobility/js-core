@@ -10,7 +10,8 @@ export { default as DataTable } from "./components/generic/DataTable";
 export { default as Form } from "./components/generic/Form"; // export { default as Map } from './components/generic/Map'
 
 export { default as QRScanner } from "./components/generic/QRScanner";
-export { request, networkActions, extraNetworkActions } from "./redux/network/actions";
+export { request } from './redux/network/actions';
+export { networkActionsCreator, extraNetworkActionsCreator } from "./redux";
 export { setSystemRoles, setDynamicRoles, setSystemPermissions, setDynamicPermissions } from "./redux/user/actions";
 export { getToken, getBaseAuthHeaders } from "./utils/auth";
 export { default as core } from "./modules/core";

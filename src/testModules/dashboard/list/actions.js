@@ -1,7 +1,7 @@
-import { networkActions } from "../../../lib";
+import { networkActionsCreator } from "../../../lib";
 
 const actions = {
-  ...networkActions("users")
+  ...networkActionsCreator("users")
 };
 
 export default actions;

@@ -1,13 +1,13 @@
-import { all, takeEvery, put, call, race, delay } from "redux-saga/effects";
+import { take, takeEvery, put, call, race, delay } from "redux-saga/effects";
 import { notification } from "antd";
-import _ from "lodash";
 import { api } from "../../utils/net";
-import actions from "../user/actions";
+import { actions } from "./actions";
+import isObject from 'lodash/isObject';
 
-function showErrorNotification(content, title = "Oops") {
-  let description = "Something went wrong, please retry.";
+function showErrorNotification(content, title = 'Oops') {
+  let description = 'Something went wrong, please retry.';
 
-  if (_.isObject(content)) {
+  if (isObject(content)) {
     const {
       errors,
       message
@@ -32,100 +32,110 @@ function showErrorNotification(content, title = "Oops") {
   });
 }
 
-function request(loginUrl) {
-  return function* REQUEST({
-    payload
-  }) {
+function* REQUEST({
+  payload
+}) {
+  const timeout = 60;
+  const {
+    options,
+    action,
+    networkSagaConfig
+  } = payload; // Set API timeout
+
+  let api_delay = timeout;
+
+  if (networkSagaConfig.timeout) {
+    api_delay = networkSagaConfig.timeout;
+  }
+
+  try {
+    yield put({
+      type: `${action}/request`,
+      requestPayload: payload
+    }); // Start race
+
+    const controller = new AbortController();
     const {
-      options,
-      action,
-      extra
-    } = payload;
+      signal
+    } = controller;
+    const {
+      response,
+      r_timeout,
+      r_cancel
+    } = yield race({
+      response: call(api, { ...options,
+        signal
+      }),
+      r_timeout: delay(api_delay * 1000),
+      r_cancel: take(`${action}/cancel`)
+    }); // Handle cancel
 
-    try {
+    if (r_cancel) {
+      controller.abort();
       yield put({
-        type: `${action}/request`,
-        payload: {
-          extra
-        }
+        type: `${action}/cancelled`,
+        requestPayload: payload
       });
-      const {
-        response,
-        timeout
-      } = yield race({
-        response: call(api, options),
-        timeout: delay(60 * 1000)
-      }); // handle timeouts
-
-      if (timeout) {
-        notification.warning({
-          message: "Slow connection",
-          description: "Request timed out. Please retry."
-        });
-        yield put({
-          type: `${action}/error`
-        });
-        return;
-      } // get json data
+      return;
+    } // Handle timeout
 
 
-      const data = yield call([response, response.json]); // console.log(data)
-
-      if (response.ok) {
-        yield put({
-          type: `${action}/success`,
-          payload: data
-        });
-        return;
-      } // oops, something happened
-
-
+    if (r_timeout) {
+      notification.warning({
+        message: 'Slow connection',
+        description: 'Request timed out. Please retry.'
+      });
+      controller.abort();
       yield put({
         type: `${action}/error`,
-        payload: data
-      }); // check status code
-
-      switch (response.status) {
-        case 401:
-          // is this a login attempt?
-          if (options.url === loginUrl) {
-            showErrorNotification(data);
-            break;
-          }
-
-          console.log("401"); // user not authorized, redirect to login
-
-          yield put({
-            type: actions.LOGOUT
-          });
-          break;
-
-        case 429:
-          showErrorNotification("Too many attempts.");
-          break;
-
-        default:
-          showErrorNotification(data);
-          break;
-      }
-    } catch (e) {
-      if (e.message === "Failed to fetch") {
-        showErrorNotification("Check your internet connection.", "Offline");
-      } else {
-        showErrorNotification();
-      } // console.log(e)
-
-
-      yield put({
-        type: `${action}/error`
+        requestPayload: payload
       });
+      return;
+    } // Get JSON data
+
+
+    const data = yield call([response, response.json]);
+
+    if (response.ok) {
+      yield put({
+        type: `${action}/success`,
+        payload: data,
+        requestPayload: payload
+      });
+      return;
+    } // Oops, something happened
+
+
+    yield put({
+      type: `${action}/error`,
+      payload: data,
+      requestPayload: payload
+    }); // Check response status code
+
+    switch (response.status) {
+      case 429:
+        showErrorNotification('Too many attempts.');
+        break;
+
+      default:
+        showErrorNotification(data);
+        break;
     }
-  };
+  } catch (e) {
+    if (e.message === 'Failed to fetch') {
+      showErrorNotification('Check your internet connection.', 'Offline');
+    } else {
+      showErrorNotification();
+    }
+
+    yield put({
+      type: `${action}/error`,
+      payload: e,
+      requestPayload: payload
+    });
+  }
 }
 
-export default function* rootSaga(config) {
-  const {
-    url
-  } = config;
-  yield all([takeEvery("network/request", request(url))]);
+export default function* network_rootSaga() {
+  yield takeEvery(actions.REQUEST, REQUEST);
 }
